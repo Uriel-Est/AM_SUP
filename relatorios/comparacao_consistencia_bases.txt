@@ -1,0 +1,61 @@
+COMPARACAO DESCRITIVA DAS BASES DA UFPB
+
+RESUMO ANUAL
+                registros_anuais  estudantes  abandonos  trancamentos  concluintes
+Ano Referencia                                                                    
+2020                         164       35362          0          1150         2250
+2021                         164       39885         17          2368         2544
+2022                         164       44296       6454          2774         2762
+2023                         159       40497       2405          2357         2961
+2024                         157       39724       2611          2094         3229
+2025                         159       40766       4477          1884         3425
+2026                         158       34866        149           769            9
+
+RESUMO SEMESTRAL POR ANO
+      registros_semestrais  matriculados  cancelados  trancados  concluidos
+Ano                                                                        
+2010                   284     50109.138      3695.0     2944.0      2244.0
+2011                   299     57433.638      4461.0     3105.0      2824.0
+2012                   307     61073.511      4544.0     3452.0      2947.0
+2013                   307     64186.062      6601.0     3045.0      3501.0
+2014                   310     62191.368      6210.0     2474.0      3913.0
+2015                   309     62087.000      5120.0     2770.0      4049.0
+2016                   308     56311.000      7393.0     2446.0      3996.0
+2017                   308     57471.000      6206.0     2227.0      4178.0
+2018                   307     53542.000      5453.0     2428.0      3800.0
+2019                   304     53968.000      5102.0     1266.0      3360.0
+2020                   298     48731.000      1138.0     1021.0      2251.0
+2021                   295     54481.000      1328.0     2176.0      2544.0
+2022                   294     55665.000      7871.0     2611.0      2763.0
+2023                   289     54192.000      4035.0     2226.0      2962.0
+2024                   285     52925.000      3803.0     1964.0      3229.0
+2025                   287     53867.000      6087.0     1806.0      3465.0
+2026                   287     52336.000      1849.0      885.0      1705.0
+
+AUSENTES NA BASE ANUAL
+Ano Referencia          0
+ID Matriz Curricular    0
+Codigo Inep             1
+Curso                   0
+Turno                   0
+Grau Academico          0
+Modalidade              0
+Qtde Estudantes         0
+Qtde Abandono           0
+Qtde Trancamentos       0
+Qtde Concluintes        0
+
+AUSENTES NA BASE SEMESTRAL
+Ano               0
+Período           0
+Código Inep       3
+Curso             0
+Turno             0
+Centro            0
+Ingressante    1277
+Matriculado      41
+Trancado        709
+Cancelado       392
+Concluído       934
+
+Nota: abandono e cancelamento nao foram considerados equivalentes. O ano de 2026 pode estar incompleto.
