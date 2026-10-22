@@ -1,0 +1,25 @@
+Total de registros: 5078
+Total de colunas: 11
+Anos disponíveis: [np.int64(2010), np.int64(2011), np.int64(2012), np.int64(2013), np.int64(2014), np.int64(2015), np.int64(2016), np.int64(2017), np.int64(2018), np.int64(2019), np.int64(2020), np.int64(2021), np.int64(2022), np.int64(2023), np.int64(2024), np.int64(2025), np.int64(2026)]
+Valores ausentes por coluna:
+Ano               0
+Período           0
+Código Inep       3
+Curso             0
+Turno             0
+Centro            0
+Ingressante    1277
+Matriculado      41
+Trancado        709
+Cancelado       392
+Concluído       934
+
+Ingressante: mínimo=1.0, mediana=42.0, máximo=370.0, valores negativos=0, valores decimais=0
+
+Matriculado: mínimo=1.0, mediana=159.0, máximo=981.0, valores negativos=0, valores decimais=20
+
+Trancado: mínimo=1.0, mediana=7.0, máximo=105.0, valores negativos=0, valores decimais=0
+
+Cancelado: mínimo=1.0, mediana=11.0, máximo=239.0, valores negativos=0, valores decimais=0
+
+Concluído: mínimo=1.0, mediana=9.0, máximo=192.0, valores negativos=0, valores decimais=0
