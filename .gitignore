@@ -1,0 +1,16 @@
+# Dados brutos: manter fora do Git
+dados/bruto/
+
+# Dados processados gerados durante a análise
+dados/processado/
+
+# Arquivos temporários do Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Arquivos temporários e de saída
+*.tmp
