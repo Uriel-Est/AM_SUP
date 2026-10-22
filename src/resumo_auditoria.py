@@ -44,13 +44,35 @@ print(df[df["Código Inep"].isna()].to_string(index=False))
 
 # 6. Investigar repetição por ano, período e Código Inep
 chave = ["Ano", "Período", "Código Inep"]
-validos = df[df["Código Inep"].notna()]
+validos = df[df["Código Inep"].notna()].copy()
 
-print("\nLINHAS REPETIDAS NA CHAVE ANO + PERÍODO + CÓDIGO INEP:")
-print(validos.duplicated(subset=chave, keep=False).sum())
+repetidos_inep = validos[
+    validos.duplicated(subset=chave, keep=False)
+].sort_values(chave)
+
+print("\nLINHAS PERTENCENTES A GRUPOS REPETIDOS:")
+print(len(repetidos_inep))
+
+print("\nEXEMPLOS DE REPETIÇÕES POR ANO, PERÍODO E CÓDIGO INEP:")
+print(repetidos_inep.head(20).to_string(index=False))
 
 # 7. Investigar repetição por ano, período, curso, turno e centro
 chave2 = ["Ano", "Período", "Curso", "Turno", "Centro"]
 
-print("\nLINHAS REPETIDAS NA CHAVE ANO + PERÍODO + CURSO + TURNO + CENTRO:")
-print(df.duplicated(subset=chave2, keep=False).sum())
+repetidos_curso = df[
+    df.duplicated(subset=chave2, keep=False)
+].sort_values(chave2)
+
+print("\nLINHAS PERTENCENTES A GRUPOS REPETIDOS NA SEGUNDA CHAVE:")
+print(len(repetidos_curso))
+
+print("\nEXEMPLOS DE REPETIÇÕES POR CURSO, TURNO E CENTRO:")
+print(repetidos_curso.head(20).to_string(index=False))
+
+# 8. Verificar linhas completamente idênticas
+print("\nLINHAS COMPLETAMENTE DUPLICADAS:")
+print(df.duplicated(keep=False).sum())
+
+print("\nEXEMPLOS DE LINHAS COMPLETAMENTE DUPLICADAS:")
+duplicatas_exatas = df[df.duplicated(keep=False)]
+print(duplicatas_exatas.head(20).to_string(index=False))
