@@ -1,9 +1,0 @@
-MODELO DE REGRESSAO RIDGE
-Registros de treino: 478
-Registros de teste: 155
-MAE Ridge: 23.59
-RMSE Ridge: 43.40
-
-COMPARACAO COM A REFERENCIA
-MAE referencia: 27.15
-RMSE referencia: 51.16

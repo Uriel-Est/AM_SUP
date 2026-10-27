@@ -1,5 +1,0 @@
-Modelo de referência: abandono do ano anterior
-Registros de treino: 478
-Registros de teste: 155
-MAE: 27.15
-RMSE: 51.16

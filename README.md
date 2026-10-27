@@ -1,132 +1,172 @@
-﻿# AM_SUP
-## Previsão de abandono em cursos de graduação da UFPB
+# Previsão da Taxa de Desistência Anual na Educação Superior
 
-Projeto desenvolvido para a disciplina de Aprendizagem de Máquina Supervisionada. O objetivo é investigar o uso de dados históricos agregados da Universidade Federal da Paraíba (UFPB) para prever a quantidade de abandonos registrada por matriz curricular no ano seguinte.
+## 1. Apresentação
 
-## Objetivo
+Este projeto, desenvolvido na disciplina de Aprendizagem de Máquina Supervisionada, tem como objetivo estruturar uma base de dados e desenvolver um modelo para previsão da Taxa de Desistência Anual (TDA) na educação superior, utilizando dados públicos disponibilizados pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP).
 
-Construir um fluxo reproduzível de preparação, análise e modelagem dos dados, comparando um modelo de referência com um modelo de regressão.
+O desenvolvimento será organizado em etapas de coleta, armazenamento, transformação, auditoria, construção da base analítica e modelagem preditiva. A arquitetura seguirá o fluxo **Bronze → Silver → Gold**, utilizado nos scripts de processamento compartilhados por Uriel.
 
-A unidade de análise atual é a matriz curricular por ano. Portanto, o projeto não prevê a evasão individual de estudantes.
+## 2. Fonte dos dados
 
-## Fontes de dados
+**Fonte principal:** INEP, Indicadores de Trajetória da Educação Superior.
 
-As bases utilizadas incluem:
+Página oficial:
+https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/indicadores-de-trajetoria-da-educacao-superior
 
-- `discentes_de_cursos_de_graduacao_da_ufpb_2026-07.csv`: dados anuais agregados de graduação.
-- `tabela_resumo___indicadores_graduacao_2026-10-16T19_42_23.516457508-03_00.csv`: indicadores semestrais utilizados nas etapas de diagnóstico.
-- Dicionário de variáveis da base de discentes da graduação da UFPB.
+Os dados são disponibilizados em planilhas Excel, distribuídas em arquivos que abrangem diferentes períodos históricos. O script Bronze também consulta o catálogo do INEP e considera endereços históricos de arquivos de indicadores de fluxo da educação superior.
 
-Os arquivos originais devem ser preservados em `dados/bruto`. As bases derivadas são armazenadas em `dados/processado`.
+Os períodos disponíveis podem se sobrepor. Por isso, os arquivos originais serão mantidos separados durante a ingestão e a conversão, evitando a concatenação automática de registros potencialmente repetidos.
 
-## Metodologia
-
-1. Diagnóstico da estrutura e da qualidade das bases.
-2. Verificação de valores ausentes, duplicações, consistência temporal e valores atípicos.
-3. Preparação da base analítica anual.
-4. Construção de pares temporais entre anos consecutivos, relacionando as variáveis de origem ao abandono registrado no ano seguinte.
-5. Avaliação de um modelo de referência.
-6. Treinamento de uma regressão Ridge e comparação das métricas.
-
-## Base temporal
-
-A base `dados/processado/base_temporal_inicial.csv` contém 796 pares de registros entre anos consecutivos, de 2020 a 2025.
-
-A variável-alvo é `Abandono_destino`, que representa a quantidade de abandonos registrada no ano seguinte para a matriz curricular correspondente.
-
-As variáveis preditoras utilizadas no experimento Ridge incluem quantidade de estudantes, abandonos, trancamentos e concluintes do ano de origem, além de curso, turno, grau acadêmico e modalidade.
-
-## Modelos e resultados iniciais
-
-O conjunto de teste utiliza registros com ano de destino 2025. O treinamento utiliza registros com anos de destino 2022, 2023 e 2024.
-
-| Modelo | MAE | RMSE |
-|---|---:|---:|
-| Referência: abandono do ano anterior | 27,15 | 51,16 |
-| Regressão Ridge | 23,59 | 43,40 |
-
-O MAE representa o erro absoluto médio, enquanto o RMSE penaliza mais fortemente erros elevados.
-
-Neste teste inicial, o Ridge reduziu o MAE em aproximadamente 13,1% e o RMSE em aproximadamente 15,2% em relação à referência.
-
-Esses resultados são preliminares. A comparação foi realizada em um único ano de teste e ainda precisa de avaliação temporal adicional para verificar a capacidade de generalização.
-
-## Alertas de qualidade dos dados
-
-Foram identificadas diferenças expressivas na variável de abandono:
-
-- Em 2020, os 164 registros apresentam abandono igual a zero.
-- Em 2021, foram registrados apenas 17 abandonos em 164 registros.
-- Em 2022, foram registrados 6.454 abandonos em 164 registros.
-
-Essas diferenças podem decorrer de mudanças reais, metodológicas ou de registro. A causa ainda não foi confirmada.
-
-Por isso:
-
-- Os arquivos brutos são preservados.
-- Os valores não são corrigidos sem documentação.
-- Os zeros não são interpretados automaticamente como ausência real de abandono.
-- Os resultados dos modelos devem ser interpretados com cautela.
-
-A variável `Qtde Abandono` também não deve ser confundida com uma taxa oficial de evasão. A definição do indicador e o denominador apropriado precisam ser validados.
-
-## Estrutura do projeto
+## 3. Arquitetura e estrutura planejada
 
 ```text
 AM_SUP/
-├── dados/
-│   ├── bruto/
-│   └── processado/
+├── README.md
+├── .gitignore
+├── requirements.txt
+├── data/
+│   ├── bronze/
+│   │   └── fluxo_educacao_superior/
+│   │       └── arquivos originais .xlsx
+│   ├── silver/
+│   │   └── fluxo_educacao_superior/
+│   │       └── arquivos tratados .parquet
+│   └── gold/
+│       └── fluxo_educacao_superior/
+│           └── base analítica consolidada .parquet
 ├── src/
-├── relatorios/
+│   ├── bronze_fluxo_ensino_superior.py
+│   ├── silver_fluxo_ensino_superior.py
+│   ├── auditoria_dados.py
+│   ├── transformacao.py
+│   ├── validacao.py
+│   └── construcao_gold.py
+├── notebooks/
+│   ├── 01_auditoria_bronze.ipynb
+│   ├── 02_transformacao_silver.ipynb
+│   ├── 03_construcao_gold.ipynb
+│   ├── 04_qualidade_e_vazamento.ipynb
+│   └── 05_particao_e_baselines.ipynb
 ├── docs/
-└── README.md
+│   ├── contrato_dados.md
+│   ├── relatorio_qualidade.md
+│   ├── analise_vazamento.md
+│   ├── estrategia_baselines.md
+│   └── contribuicoes.md
+└── relatorios/
+    └── resultados e registros das validações
 ```
 
-- `dados/bruto/`: arquivos originais.
-- `dados/processado/`: bases derivadas e preparadas.
-- `src/`: scripts Python de diagnóstico, preparação e modelagem.
-- `relatorios/`: resultados e registros das análises.
-- `docs/`: documentação complementar.
+## 4. Camadas de dados
 
-## Execução
+### 4.1. Bronze: dados originais
 
-Execute os scripts a partir da raiz do repositório, no terminal:
+Diretório: `data/bronze/fluxo_educacao_superior/`
 
-```powershell
-python src/preparar_base_analitica.py
-python src/construir_base_temporal.py
-python src/avaliar_variavel_alvo.py
-python src/modelo_referencia.py
-python src/modelo_regressao.py
+Responsável por armazenar as planilhas originais do INEP, extraídas dos arquivos ZIP disponibilizados nos catálogos oficiais.
+
+O script `src/bronze_fluxo_ensino_superior.py` realiza as seguintes operações:
+
+- Consulta os catálogos de indicadores de trajetória e de fluxo da educação superior.
+- Considera endereços históricos e períodos candidatos a atualização.
+- Baixa os arquivos ZIP disponíveis.
+- Extrai somente as planilhas Excel que correspondem ao padrão de nomes esperado.
+- Mantém os arquivos extraídos separados e evita sobrescrever arquivos existentes por padrão.
+
+Os arquivos originais serão preservados como referência para auditoria e reprodução das transformações.
+
+### 4.2. Silver: dados tratados
+
+Diretório: `data/silver/fluxo_educacao_superior/`
+
+Responsável por converter as planilhas Bronze em arquivos Parquet, mantendo um arquivo por planilha de origem.
+
+O script `src/silver_fluxo_ensino_superior.py`:
+
+- Lê as planilhas utilizando a linha 8 como cabeçalho técnico (`header=8`).
+- Verifica a presença da coluna `CO_IES`.
+- Remove linhas de rodapé identificadas pela indicação de fonte.
+- Remove colunas totalmente vazias e linhas totalmente vazias.
+- Salva os resultados em formato Parquet.
+
+A conversão facilita o processamento dos dados e reduz a necessidade de reler repetidamente as planilhas Excel.
+
+**Limitação conhecida:** essa etapa não consolida os diferentes períodos nem resolve, por si só, a possível duplicidade decorrente da sobreposição entre arquivos históricos. Essas verificações serão realizadas nas etapas seguintes.
+
+### 4.3. Gold: base analítica para modelagem
+
+Diretório: `data/gold/fluxo_educacao_superior/`
+
+Esta camada será construída a partir dos arquivos Silver após auditoria e definição das regras de consolidação.
+
+A base deverá reunir os registros necessários para a análise temporal e a previsão da TDA, com documentação de sua unidade de análise, chave de identificação, cobertura temporal e variáveis utilizadas.
+
+Antes da consolidação, serão avaliados:
+
+- A compatibilidade entre os períodos e as versões das planilhas.
+- A existência de registros repetidos e a regra para tratá-los.
+- A consistência dos identificadores institucionais e demais dimensões disponíveis.
+- A presença de valores ausentes, códigos inválidos e mudanças no layout.
+- A disponibilidade da variável-alvo e das variáveis explicativas.
+- A possibilidade de vazamento de informação entre os dados de entrada e o período previsto.
+
+A estrutura Gold está planejada, mas sua construção e validação ainda fazem parte das próximas etapas do projeto.
+
+## 5. Definição da previsão
+
+A variável de interesse é a Taxa de Desistência Anual (TDA), disponibilizada nos indicadores de trajetória da educação superior do INEP.
+
+A proposta é investigar a previsão da taxa para um período futuro, utilizando informações disponíveis em períodos anteriores. A definição final do horizonte de previsão, da unidade de análise e das variáveis explicativas dependerá da auditoria dos arquivos e da confirmação da comparabilidade temporal.
+
+A modelagem deverá respeitar a ordem cronológica dos dados, evitando utilizar informações futuras para prever períodos anteriores.
+
+## 6. Etapas metodológicas
+
+1. **Ingestão:** obtenção dos arquivos públicos do INEP e armazenamento na camada Bronze.
+2. **Transformação:** leitura, limpeza estrutural e conversão das planilhas para Parquet na camada Silver.
+3. **Auditoria:** inspeção de colunas, tipos, períodos, valores ausentes, duplicidades e inconsistências.
+4. **Construção da Gold:** definição da unidade de análise, da chave e das regras de consolidação.
+5. **Análise de vazamento:** avaliação das variáveis que podem conter informação indisponível no momento da previsão.
+6. **Preparação da modelagem:** definição das partições temporais de treino, validação e teste.
+7. **Baselines:** implementação de modelos de referência para estabelecer um ponto de comparação.
+8. **Avaliação:** comparação dos resultados com métricas adequadas ao problema e documentação das limitações.
+
+O pré-processamento que exige aprendizado dos dados, como imputação e padronização, deverá ser ajustado apenas com os dados de treino e aplicado às demais partições sem utilizar informações futuras.
+
+## 7. Reprodutibilidade e dependências
+
+Os scripts compartilhados indicam as seguintes dependências iniciais:
+
+Para a camada Bronze:
+
+```bash
+pip install requests beautifulsoup4 tqdm truststore
 ```
 
-Os scripts de preparação devem ser executados antes dos scripts que dependem de suas saídas.
+Para a camada Silver:
 
-## Dependências
-
-Python 3.13 e bibliotecas:
-
-- pandas
-- numpy
-- scikit-learn
-
-Instalação:
-
-```powershell
-python -m pip install pandas numpy scikit-learn
+```bash
+pip install pandas openpyxl pyarrow
 ```
 
-## Próximas etapas
+As dependências serão reunidas no arquivo `requirements.txt` à medida que os demais componentes forem implementados.
 
-- Verificar a definição e a comparabilidade histórica do indicador de abandono.
-- Ampliar a avaliação temporal dos modelos.
-- Investigar a influência de valores extremos e de registros iguais a zero.
-- Documentar a execução completa e os resultados dos experimentos.
-- Avaliar a adequação das variáveis disponíveis no momento real da previsão.
+A execução dos scripts depende do diretório de trabalho. Os caminhos relativos foram definidos para uma execução a partir da raiz do repositório `AM_SUP`.
 
-## Limitações
+## 8. Documentação e entregáveis
 
-O histórico anual disponível abrange poucos anos e contém alertas de qualidade. A avaliação atual não demonstra, por si só, que o modelo seja adequado para decisões institucionais reais.
+A documentação será organizada para registrar:
 
-O projeto tem caráter acadêmico e exploratório. Qualquer uso operacional depende de validação adicional dos dados, da metodologia e do desempenho preditivo.
+- O contrato da base de dados e a definição da unidade de análise.
+- A origem, a cobertura temporal e as transformações aplicadas.
+- Os resultados da auditoria e os problemas de qualidade encontrados.
+- A análise de vazamento de dados.
+- A estratégia de particionamento temporal e os modelos de referência.
+- As contribuições dos integrantes da equipe.
+
+Os relatórios e notebooks serão atualizados conforme as análises forem executadas, de modo que as conclusões documentadas correspondam aos resultados efetivamente obtidos.
+
+## 9. Equipe
+
+- Vivian Germano
+- Uriel Holanda
