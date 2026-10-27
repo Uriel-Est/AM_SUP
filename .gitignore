@@ -1,7 +1,10 @@
-# Dados brutos: manter fora do Git
-dados/bruto/
+# Dados originais e processados do INEP
+data/bronze/
+data/silver/
+data/gold/
 
-# Dados processados gerados durante a análise
+# Dados da estrutura antiga
+dados/bruto/
 dados/processado/
 
 # Arquivos temporários do Python
@@ -12,5 +15,12 @@ __pycache__/
 .venv/
 venv/
 
-# Arquivos temporários e de saída
+# Arquivos temporários
 *.tmp
+
+# Configurações locais do VS Code
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
