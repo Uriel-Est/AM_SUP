@@ -1,117 +1,163 @@
-"""
-SILVER — Converte os .xlsx da bronze em .parquet limpos.
 
-Uso no Positron: abra este .py e clique em Run Source.
+"""
+SILVER — Converte os arquivos .xlsx da Bronze em arquivos .parquet limpos.
+
+Uso:
+    Execute a partir da raiz do repositório:
+    python -u .\code\silver_fluxo_ensino_superior.py
 
 Dependências:
-    pip install pandas openpyxl pyarrow
+    pandas, openpyxl, pyarrow
 
-Estrutura dos arquivos (confirmada nos 11 arquivos do bronze):
-  linha 0..5   : cabeçalho institucional (Ministério, INEP, título)
-  linha 6      : nomes legíveis das colunas
-  linha 7      : sub-nomes das colunas 27-30 (TAP, TCA, TDA, TCAN)
-  linha 8      : NOMES TÉCNICOS (CO_IES, NO_IES, ..., TAP, TCA, TDA, TCAN)
-  linha 9..N-2 : dados
-  linha N-1    : "Fonte: Censo da Educação Superior/Inep."
-
-Ação: lê com header=8, descarta a linha "Fonte:...", converte para parquet.
-Os arquivos permanecem SEPARADOS, um parquet por xlsx, mesmo nome.
+Os arquivos permanecem separados: um Parquet por arquivo Excel.
 """
+
 from __future__ import annotations
 
-# ==================== CONFIGURAÇÕES — POSITRON ====================
-import os
 import logging
+import os
+import traceback
 from pathlib import Path
 
-BRONZE_DIR = Path.cwd() / 'data' / 'bronze' / 'fluxo_educacao_superior'
-SILVER_DIR = Path.cwd() / 'data' / 'silver' / 'fluxo_educacao_superior'
+import pandas as pd
 
-# Linha 0-based que vira o header (nomes técnicos CO_IES, ...).
-# Confirmado em todos os 11 arquivos. Se algum dia o INEP mudar o layout,
-# só isto precisa ser ajustado.
+
+# ==================== CONFIGURAÇÕES ====================
+
+BRONZE_DIR = (
+    Path.cwd() / "data" / "bronze" / "fluxo_educacao_superior"
+)
+SILVER_DIR = (
+    Path.cwd() / "data" / "silver" / "fluxo_educacao_superior"
+)
+
 HEADER_ROW = 8
 
+# False preserva os Parquet já existentes.
+# Mude para True somente se quiser recriar todos os arquivos.
 SOBRESCREVER = False
-# ================================================================
 
-try:
-    import pandas as pd
-except ImportError as e:
-    raise RuntimeError('Instale: pip install pandas openpyxl pyarrow') from e
-
-LOG = logging.getLogger('silver-fluxo')
+LOG = logging.getLogger("silver-fluxo")
 
 
 def converter(caminho: Path) -> str:
-    destino = SILVER_DIR / caminho.with_suffix('.parquet').name
+    """Converte um arquivo Excel em Parquet e retorna seu resultado."""
+
+    destino = SILVER_DIR / caminho.with_suffix(".parquet").name
+
     if destino.exists() and not SOBRESCREVER:
-        LOG.info('✔ Já existe, pulando: %s', destino.name)
-        return 'pulado'
+        LOG.info("Já existe, pulando: %s", destino.name)
+        return "pulado"
 
     try:
+        LOG.info("Lendo Excel: %s", caminho.name)
+
         df = pd.read_excel(caminho, header=HEADER_ROW)
 
-        # Sanidade: se o layout mudou, falha aqui em vez de gerar lixo.
-        if 'CO_IES' not in df.columns:
+        if "CO_IES" not in df.columns:
             raise ValueError(
-                f"coluna 'CO_IES' ausente após header={HEADER_ROW}. "
-                f"Primeiras colunas lidas: {list(df.columns)[:6]}"
+                f"Coluna 'CO_IES' ausente após header={HEADER_ROW}. "
+                f"Colunas encontradas: {list(df.columns)}"
             )
 
-        # Descarta a(s) linha(s) de rodapé "Fonte: ..."
-        rodape = df['CO_IES'].astype(str).str.contains(
-            'Fonte', case=False, na=False,
+        # Remove linhas de rodapé que contêm "Fonte".
+        rodape = df["CO_IES"].astype(str).str.contains(
+            "Fonte", case=False, na=False
         )
         n_rodape = int(rodape.sum())
-        df = df[~rodape]
+        df = df.loc[~rodape].copy()
 
-        # Descarta colunas totalmente vazias (a 31ª coluna "fantasma"
-        # que aparece no shape mas não tem nome no header 8).
-        df = df.dropna(axis=1, how='all')
+        # Remove colunas e linhas completamente vazias.
+        df = df.dropna(axis=1, how="all")
+        df = df.dropna(how="all").reset_index(drop=True)
 
-        # Descarta eventuais linhas totalmente vazias.
-        df = df.dropna(how='all').reset_index(drop=True)
-
-        # Escrita atômica.
         SILVER_DIR.mkdir(parents=True, exist_ok=True)
-        tmp = destino.with_suffix('.parquet.tmp')
-        df.to_parquet(tmp, engine='pyarrow', index=False)
-        os.replace(tmp, destino)
+
+        # Grava primeiro em arquivo temporário para evitar
+        # deixar um Parquet incompleto em caso de falha.
+        tmp = destino.with_name(destino.stem + ".tmp.parquet")
+
+        try:
+            df.to_parquet(tmp, engine="pyarrow", index=False)
+            os.replace(tmp, destino)
+        finally:
+            if tmp.exists():
+                tmp.unlink()
 
         LOG.info(
-            '✅ %s → %s | %d linhas × %d colunas | rodapés removidos: %d',
-            caminho.name, destino.name, len(df), df.shape[1], n_rodape,
+            "CONVERTIDO: %s | %s | %s linhas x %s colunas | "
+            "rodapés removidos: %s",
+            caminho.name,
+            destino.name,
+            len(df),
+            df.shape[1],
+            n_rodape,
         )
-        return 'convertido'
-    except Exception as e:
-        LOG.error('Falha em %s: %s', caminho.name, e)
-        return 'falha'
+
+        return "convertido"
+
+    except Exception:
+        LOG.error(
+            "FALHA ao processar %s:\n%s",
+            caminho.name,
+            traceback.format_exc(),
+        )
+        return "falha"
 
 
 def main() -> None:
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s | %(levelname)s | %(message)s',
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        force=True,
     )
-    LOG.info('BRONZE: %s', BRONZE_DIR)
-    LOG.info('SILVER: %s', SILVER_DIR)
+
+    LOG.info("BRONZE: %s", BRONZE_DIR.resolve())
+    LOG.info("SILVER: %s", SILVER_DIR.resolve())
 
     if not BRONZE_DIR.is_dir():
-        LOG.error('bronze não existe: %s', BRONZE_DIR)
+        LOG.error("A pasta Bronze não existe: %s", BRONZE_DIR.resolve())
         return
 
-    arquivos = sorted(BRONZE_DIR.glob('*.xlsx'))
-    LOG.info('%d arquivos .xlsx', len(arquivos))
+    arquivos = sorted(BRONZE_DIR.glob("*.xlsx"))
+    LOG.info("Total de arquivos Excel encontrados: %d", len(arquivos))
+
     if not arquivos:
+        LOG.warning("Nenhum arquivo .xlsx encontrado.")
         return
 
-    resumo = {'convertido': 0, 'pulado': 0, 'falha': 0}
-    for f in arquivos:
-        resumo[converter(f)] += 1
-    LOG.info('RESUMO: %s', resumo)
-    LOG.info('Parquets em: %s', SILVER_DIR)
+    SILVER_DIR.mkdir(parents=True, exist_ok=True)
+
+    resumo = {
+        "convertido": 0,
+        "pulado": 0,
+        "falha": 0,
+    }
+
+    for indice, arquivo in enumerate(arquivos, start=1):
+        LOG.info(
+            "PROGRESSO: arquivo %d de %d: %s",
+            indice,
+            len(arquivos),
+            arquivo.name,
+        )
+
+        try:
+            resultado = converter(arquivo)
+            resumo[resultado] += 1
+        except Exception:
+            # Uma falha inesperada não impede os próximos arquivos.
+            resumo["falha"] += 1
+            LOG.exception("Erro inesperado em %s", arquivo.name)
+
+    LOG.info("================ RESUMO FINAL ================")
+    LOG.info("Arquivos Excel encontrados: %d", len(arquivos))
+    LOG.info("Convertidos: %d", resumo["convertido"])
+    LOG.info("Já existentes, ignorados: %d", resumo["pulado"])
+    LOG.info("Falhas: %d", resumo["falha"])
+    LOG.info("Pasta Silver: %s", SILVER_DIR.resolve())
+    LOG.info("================================================")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
