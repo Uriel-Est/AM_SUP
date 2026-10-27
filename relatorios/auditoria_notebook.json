@@ -1,0 +1,67 @@
+{
+  "arquivo": "data\\silver\\fluxo_educacao_superior\\indicadores_trajetoria_educacao_superior_2020_2024.parquet",
+  "dimensao_silver": [
+    174240,
+    31
+  ],
+  "duplicatas_chave_candidata": 0,
+  "ausencias_por_coluna": {
+    "CO_IES": 0,
+    "NO_IES": 0,
+    "TP_CATEGORIA_ADMINISTRATIVA": 0,
+    "TP_ORGANIZACAO_ACADEMICA": 0,
+    "CO_CURSO": 0,
+    "NO_CURSO": 0,
+    "CO_REGIAO": 26230,
+    "CO_UF": 26230,
+    "CO_MUNICIPIO": 26230,
+    "TP_GRAU_ACADEMICO": 0,
+    "TP_MODALIDADE_ENSINO": 0,
+    "CO_CINE_ROTULO": 0,
+    "NO_CINE_ROTULO": 0,
+    "CO_CINE_AREA_GERAL": 0,
+    "NO_CINE_AREA_GERAL": 0,
+    "NU_ANO_INGRESSO": 0,
+    "NU_ANO_REFERENCIA": 0,
+    "NU_PRAZO_INTEGRALIZACAO": 0,
+    "NU_ANO_INTEGRALIZACAO": 0,
+    "NU_PRAZO_ACOMPANHAMENTO": 0,
+    "NU_ANO_MAXIMO_ACOMPANHAMENTO": 0,
+    "QT_INGRESSANTE": 0,
+    "QT_PERMANENCIA": 0,
+    "QT_CONCLUINTE": 0,
+    "QT_DESISTENCIA": 0,
+    "QT_FALECIDO": 0,
+    "TAP": 0,
+    "TCA": 0,
+    "TDA": 0,
+    "TCAN": 0,
+    "TADA": 0
+  },
+  "registros_por_ano": {
+    "2020.0": 34848,
+    "2021.0": 34848,
+    "2022.0": 34848,
+    "2023.0": 34848,
+    "2024.0": 34848
+  },
+  "resultados_modelos": [
+    {
+      "modelo": "baseline_media",
+      "treino_registros": 139392,
+      "teste_registros": 34848,
+      "MAE": 27.66762918217844,
+      "RMSE": 32.8217263061661,
+      "R2": -0.8526845753928065
+    },
+    {
+      "modelo": "random_forest",
+      "treino_registros": 139392,
+      "teste_registros": 34848,
+      "MAE": 23.81440183480376,
+      "RMSE": 27.75096427296328,
+      "R2": -0.32444766828958116
+    }
+  ],
+  "limitacao": "Separação temporal não impede sobreposição de curso/coorte entre treino e teste."
+}

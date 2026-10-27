@@ -1,172 +1,121 @@
-# Previsão da Taxa de Desistência Anual na Educação Superior
+# AM_SUP | Aprendizagem de Máquina Supervisionada
 
-## 1. Apresentação
+Repositório do projeto aplicado da disciplina Aprendizagem de Máquina
+Supervisionada, UFPB/CCSA, período 2026.2.
 
-Este projeto, desenvolvido na disciplina de Aprendizagem de Máquina Supervisionada, tem como objetivo estruturar uma base de dados e desenvolver um modelo para previsão da Taxa de Desistência Anual (TDA) na educação superior, utilizando dados públicos disponibilizados pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP).
+## Problema e objetivo
 
-O desenvolvimento será organizado em etapas de coleta, armazenamento, transformação, auditoria, construção da base analítica e modelagem preditiva. A arquitetura seguirá o fluxo **Bronze → Silver → Gold**, utilizado nos scripts de processamento compartilhados por Uriel.
+O projeto explora dados públicos de indicadores de trajetória da educação
+superior para avaliar a possibilidade de prever a Taxa de Desistência Anual
+(TDA). O experimento atual é exploratório e não deve ser interpretado como
+um sistema validado para decisões operacionais.
 
-## 2. Fonte dos dados
+## Fonte e cobertura
 
-**Fonte principal:** INEP, Indicadores de Trajetória da Educação Superior.
+A base utilizada é formada por arquivos de indicadores de trajetória da
+educação superior, com dados organizados por instituição, curso, coorte de
+ingresso e ano de referência. A base Silver auditada contém os anos de
+referência de 2020 a 2024, com 174.240 registros e 31 colunas.
 
-Página oficial:
-https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/indicadores-de-trajetoria-da-educacao-superior
+Os arquivos brutos são mantidos localmente e ignorados pelo Git por causa
+do tamanho. Antes da entrega, a equipe deve confirmar e registrar o endereço
+oficial exato da fonte, a data de obtenção e a licença/condições de uso.
+O script de obtenção existente deve ser consultado para reproduzir o download.
 
-Os dados são disponibilizados em planilhas Excel, distribuídas em arquivos que abrangem diferentes períodos históricos. O script Bronze também consulta o catálogo do INEP e considera endereços históricos de arquivos de indicadores de fluxo da educação superior.
+## Estrutura
 
-Os períodos disponíveis podem se sobrepor. Por isso, os arquivos originais serão mantidos separados durante a ingestão e a conversão, evitando a concatenação automática de registros potencialmente repetidos.
+- `code/bronze_fluxo_ensino_superior.py`: obtenção dos arquivos brutos.
+- `code/silver_fluxo_ensino_superior.py`: conversão para Parquet.
+- `code/modelo_baseline_tda.py`: preparação da base Gold e experimento.
+- `data/bronze/`: dados originais locais, ignorados pelo Git.
+- `data/silver/`: dados tratados locais, ignorados pelo Git.
+- `data/gold/`: base para modelagem, ignorada pelo Git.
+- `notebooks/`: notebook de auditoria e modelagem.
+- `docs/`: contrato de dados e diagnóstico de vazamento.
+- `relatorios/`: relatórios de execução e avaliação.
 
-## 3. Arquitetura e estrutura planejada
+## Como executar no Windows
 
-```text
-AM_SUP/
-├── README.md
-├── .gitignore
-├── requirements.txt
-├── data/
-│   ├── bronze/
-│   │   └── fluxo_educacao_superior/
-│   │       └── arquivos originais .xlsx
-│   ├── silver/
-│   │   └── fluxo_educacao_superior/
-│   │       └── arquivos tratados .parquet
-│   └── gold/
-│       └── fluxo_educacao_superior/
-│           └── base analítica consolidada .parquet
-├── src/
-│   ├── bronze_fluxo_ensino_superior.py
-│   ├── silver_fluxo_ensino_superior.py
-│   ├── auditoria_dados.py
-│   ├── transformacao.py
-│   ├── validacao.py
-│   └── construcao_gold.py
-├── notebooks/
-│   ├── 01_auditoria_bronze.ipynb
-│   ├── 02_transformacao_silver.ipynb
-│   ├── 03_construcao_gold.ipynb
-│   ├── 04_qualidade_e_vazamento.ipynb
-│   └── 05_particao_e_baselines.ipynb
-├── docs/
-│   ├── contrato_dados.md
-│   ├── relatorio_qualidade.md
-│   ├── analise_vazamento.md
-│   ├── estrategia_baselines.md
-│   └── contribuicoes.md
-└── relatorios/
-    └── resultados e registros das validações
+Abra o terminal na raiz do repositório e instale as dependências:
+
+```powershell
+python -m pip install -r requirements.txt
 ```
 
-## 4. Camadas de dados
+Execute os scripts na ordem necessária:
 
-### 4.1. Bronze: dados originais
-
-Diretório: `data/bronze/fluxo_educacao_superior/`
-
-Responsável por armazenar as planilhas originais do INEP, extraídas dos arquivos ZIP disponibilizados nos catálogos oficiais.
-
-O script `src/bronze_fluxo_ensino_superior.py` realiza as seguintes operações:
-
-- Consulta os catálogos de indicadores de trajetória e de fluxo da educação superior.
-- Considera endereços históricos e períodos candidatos a atualização.
-- Baixa os arquivos ZIP disponíveis.
-- Extrai somente as planilhas Excel que correspondem ao padrão de nomes esperado.
-- Mantém os arquivos extraídos separados e evita sobrescrever arquivos existentes por padrão.
-
-Os arquivos originais serão preservados como referência para auditoria e reprodução das transformações.
-
-### 4.2. Silver: dados tratados
-
-Diretório: `data/silver/fluxo_educacao_superior/`
-
-Responsável por converter as planilhas Bronze em arquivos Parquet, mantendo um arquivo por planilha de origem.
-
-O script `src/silver_fluxo_ensino_superior.py`:
-
-- Lê as planilhas utilizando a linha 8 como cabeçalho técnico (`header=8`).
-- Verifica a presença da coluna `CO_IES`.
-- Remove linhas de rodapé identificadas pela indicação de fonte.
-- Remove colunas totalmente vazias e linhas totalmente vazias.
-- Salva os resultados em formato Parquet.
-
-A conversão facilita o processamento dos dados e reduz a necessidade de reler repetidamente as planilhas Excel.
-
-**Limitação conhecida:** essa etapa não consolida os diferentes períodos nem resolve, por si só, a possível duplicidade decorrente da sobreposição entre arquivos históricos. Essas verificações serão realizadas nas etapas seguintes.
-
-### 4.3. Gold: base analítica para modelagem
-
-Diretório: `data/gold/fluxo_educacao_superior/`
-
-Esta camada será construída a partir dos arquivos Silver após auditoria e definição das regras de consolidação.
-
-A base deverá reunir os registros necessários para a análise temporal e a previsão da TDA, com documentação de sua unidade de análise, chave de identificação, cobertura temporal e variáveis utilizadas.
-
-Antes da consolidação, serão avaliados:
-
-- A compatibilidade entre os períodos e as versões das planilhas.
-- A existência de registros repetidos e a regra para tratá-los.
-- A consistência dos identificadores institucionais e demais dimensões disponíveis.
-- A presença de valores ausentes, códigos inválidos e mudanças no layout.
-- A disponibilidade da variável-alvo e das variáveis explicativas.
-- A possibilidade de vazamento de informação entre os dados de entrada e o período previsto.
-
-A estrutura Gold está planejada, mas sua construção e validação ainda fazem parte das próximas etapas do projeto.
-
-## 5. Definição da previsão
-
-A variável de interesse é a Taxa de Desistência Anual (TDA), disponibilizada nos indicadores de trajetória da educação superior do INEP.
-
-A proposta é investigar a previsão da taxa para um período futuro, utilizando informações disponíveis em períodos anteriores. A definição final do horizonte de previsão, da unidade de análise e das variáveis explicativas dependerá da auditoria dos arquivos e da confirmação da comparabilidade temporal.
-
-A modelagem deverá respeitar a ordem cronológica dos dados, evitando utilizar informações futuras para prever períodos anteriores.
-
-## 6. Etapas metodológicas
-
-1. **Ingestão:** obtenção dos arquivos públicos do INEP e armazenamento na camada Bronze.
-2. **Transformação:** leitura, limpeza estrutural e conversão das planilhas para Parquet na camada Silver.
-3. **Auditoria:** inspeção de colunas, tipos, períodos, valores ausentes, duplicidades e inconsistências.
-4. **Construção da Gold:** definição da unidade de análise, da chave e das regras de consolidação.
-5. **Análise de vazamento:** avaliação das variáveis que podem conter informação indisponível no momento da previsão.
-6. **Preparação da modelagem:** definição das partições temporais de treino, validação e teste.
-7. **Baselines:** implementação de modelos de referência para estabelecer um ponto de comparação.
-8. **Avaliação:** comparação dos resultados com métricas adequadas ao problema e documentação das limitações.
-
-O pré-processamento que exige aprendizado dos dados, como imputação e padronização, deverá ser ajustado apenas com os dados de treino e aplicado às demais partições sem utilizar informações futuras.
-
-## 7. Reprodutibilidade e dependências
-
-Os scripts compartilhados indicam as seguintes dependências iniciais:
-
-Para a camada Bronze:
-
-```bash
-pip install requests beautifulsoup4 tqdm truststore
+```powershell
+python code/bronze_fluxo_ensino_superior.py
+python code/silver_fluxo_ensino_superior.py
+python code/modelo_baseline_tda.py
 ```
 
-Para a camada Silver:
+Os scripts usam caminhos relativos à raiz do repositório. A etapa Bronze
+pode baixar arquivos grandes e depende da disponibilidade da fonte. A etapa
+de modelagem depende da existência do arquivo Silver esperado em
+`data/silver/fluxo_educacao_superior/`.
 
-```bash
-pip install pandas openpyxl pyarrow
-```
+Para executar o notebook, abra `notebooks/auditoria_baseline_tda.ipynb`
+no VS Code com a extensão Jupyter e selecione o ambiente Python com as
+dependências instaladas.
 
-As dependências serão reunidas no arquivo `requirements.txt` à medida que os demais componentes forem implementados.
+## Contrato de dados resumido
 
-A execução dos scripts depende do diretório de trabalho. Os caminhos relativos foram definidos para uma execução a partir da raiz do repositório `AM_SUP`.
+- Unidade da linha: registro associado à trajetória de uma coorte de ingresso,
+  curso/instituição e ano de referência, conforme a estrutura da fonte.
+- Chave candidata auditada: `CO_IES`, `CO_CURSO`, `NU_ANO_INGRESSO`,
+  `NU_ANO_REFERENCIA`.
+- Alvo do experimento: `TDA`, variável numérica entre 0 e 100 na base auditada.
+- Cobertura da base auditada: anos de referência 2020 a 2024.
+- Corte do experimento: treino em anos anteriores a 2024; teste em 2024.
+- Atualização da fonte: deve ser confirmada na publicação oficial.
+- Privacidade: a base usada é agregada por indicadores; confirmar a licença
+  e as condições de redistribuição antes de publicar dados derivados.
 
-## 8. Documentação e entregáveis
+## Experimento inicial
 
-A documentação será organizada para registrar:
+O script compara um `DummyRegressor` que prevê a média do treino com um
+`RandomForestRegressor`. O pré-processamento está dentro de um `Pipeline`,
+com imputação e codificação ajustadas durante o treino. Categorias não vistas
+são tratadas com `handle_unknown="ignore"`.
 
-- O contrato da base de dados e a definição da unidade de análise.
-- A origem, a cobertura temporal e as transformações aplicadas.
-- Os resultados da auditoria e os problemas de qualidade encontrados.
-- A análise de vazamento de dados.
-- A estratégia de particionamento temporal e os modelos de referência.
-- As contribuições dos integrantes da equipe.
+Resultados registrados no experimento atual:
 
-Os relatórios e notebooks serão atualizados conforme as análises forem executadas, de modo que as conclusões documentadas correspondam aos resultados efetivamente obtidos.
+| Modelo | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Baseline de média | 27,67 | 32,82 | -0,853 |
+| Random Forest | 23,81 | 27,75 | -0,324 |
 
-## 9. Equipe
+O Random Forest reduziu MAE e RMSE em relação ao baseline de média treinado.
+Entretanto, o R² negativo indica desempenho limitado. O experimento não
+demonstra, por si só, que o modelo seja adequado para uso real.
 
-- Vivian Germano
-- Uriel Holanda
+## Limitações e riscos
+
+1. A separação temporal não impede que o mesmo curso ou coorte apareça em
+   treino e teste.
+2. A definição e o momento de disponibilidade da TDA precisam ser confirmados
+   na documentação oficial da fonte.
+3. A seleção de variáveis precisa ser validada contra o instante real em que
+   uma previsão seria feita.
+4. O experimento atual não implementa um baseline operacional baseado na
+   regra usada hoje por uma equipe decisora.
+5. Não há evidência neste repositório, por si só, de que o modelo tenha sido
+   validado por especialistas ou avaliado em produção.
+
+## Uso de IA generativa
+
+Ferramenta utilizada: ChatGPT. Finalidade: apoio à organização da documentação,
+estruturação de código, auditoria e explicação dos resultados. A equipe é
+responsável por executar, conferir e compreender os arquivos antes da entrega.
+
+## Integrantes e contribuições
+
+Preencher com os nomes completos de todos os integrantes e descrever a
+contribuição real de cada um antes da submissão.
+
+## Referências e rastreabilidade
+
+Registrar aqui o link exato da fonte oficial dos dados, a data de obtenção,
+a versão dos arquivos e eventuais parâmetros de download. Não afirmar uma
+fonte ou licença sem conferência documental.
