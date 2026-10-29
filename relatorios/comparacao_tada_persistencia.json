@@ -1,0 +1,18 @@
+{
+  "treino": "anos de origem 2010-2022",
+  "teste": "origem 2023, alvo 2024",
+  "quantidade_treino": 2217370,
+  "quantidade_teste": 190488,
+  "modelos": {
+    "persistencia": {
+      "MAE": 4.033113086044092,
+      "RMSE": 9.179219683792184,
+      "R2": -1.6647726292831253
+    },
+    "random_forest": {
+      "MAE": 6.439621198119322,
+      "RMSE": 8.177907142989243,
+      "R2": -1.1151101106285473
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "objetivo": "Prever a TADA do ano seguinte usando características disponíveis no ano de referência.",
+  "variavel_alvo": "TADA_FUTURA",
+  "definicao_temporal": "TADA_FUTURA corresponde à TADA do mesmo curso, instituição e coorte no ano de referência seguinte.",
+  "chaves_associacao": [
+    "CO_IES",
+    "CO_CURSO",
+    "NU_ANO_INGRESSO"
+  ],
+  "treino": "Anos de referência de 2020 a 2022",
+  "teste": "Características de 2023 para prever TADA observada em 2024",
+  "preditoras": [
+    "TP_CATEGORIA_ADMINISTRATIVA",
+    "TP_ORGANIZACAO_ACADEMICA",
+    "TP_GRAU_ACADEMICO",
+    "TP_MODALIDADE_ENSINO",
+    "CO_REGIAO",
+    "CO_UF",
+    "CO_CINE_AREA_GERAL",
+    "NU_ANO_INGRESSO",
+    "QT_INGRESSANTE"
+  ],
+  "observacoes": [
+    "NU_ANO_REFERENCIA é usado para separar os períodos, não como preditor.",
+    "O pré-processamento é ajustado apenas nos dados de treino.",
+    "Cursos e coortes podem aparecer em treino e teste.",
+    "Os resultados medem a previsão temporal para registros das unidades representadas na base.",
+    "A definição oficial e a interpretação da TADA devem ser confirmadas na documentação da fonte."
+  ],
+  "resultados": [
+    {
+      "modelo": "baseline_media",
+      "treino_registros": 104544,
+      "teste_registros": 34848,
+      "ano_caracteristicas_teste": 2023,
+      "ano_tada_prevista": 2024,
+      "MAE": 10.073951567585597,
+      "RMSE": 11.462530450325907,
+      "R2": -0.7978634227742805
+    },
+    {
+      "modelo": "random_forest",
+      "treino_registros": 104544,
+      "teste_registros": 34848,
+      "ano_caracteristicas_teste": 2023,
+      "ano_tada_prevista": 2024,
+      "MAE": 10.504354172381374,
+      "RMSE": 12.761749785750078,
+      "R2": -1.2285179819506555
+    }
+  ]
+}

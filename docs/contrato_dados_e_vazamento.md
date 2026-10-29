@@ -1,76 +1,52 @@
-# Contrato de dados e auditoria
+﻿# Contrato de dados e auditoria
 
-## Objetivo e unidade
+## Objetivo
 
-O experimento atual utiliza a variável `TDA` como alvo e registros de
-trajetória da educação superior. A chave candidata examinada é
-`CO_IES`, `CO_CURSO`, `NU_ANO_INGRESSO` e `NU_ANO_REFERENCIA`.
-A unicidade foi verificada nessa combinação na base Silver de 2020–2024.
+O experimento investiga a previsão da Taxa de Desistência Acumulada (TADA) futura em registros de trajetória da educação superior. A unidade de análise é um par de observações da mesma instituição, curso e coorte de ingresso em anos de referência consecutivos.
 
-## Cobertura conhecida
+## Chave e construção dos pares
 
-Base auditada: `indicadores_trajetoria_educacao_superior_2020_2024.parquet`.
-Dimensão observada: 174.240 linhas e 31 colunas; 34.848 registros por ano
-de referência de 2020 a 2024.
+Chave de identificação da trajetória:
+- `CO_IES`: instituição de ensino superior.
+- `CO_CURSO`: curso.
+- `NU_ANO_INGRESSO`: ano de ingresso da coorte.
 
-## Alvo e corte
+Cada observação de origem é associada à observação da mesma chave no ano de referência seguinte. O alvo é `TADA_FUTURA`, correspondente à TADA da observação futura.
 
-Alvo: `TDA`, valores observados entre 0 e 100. A definição operacional
-completa, a fórmula oficial, a data em que o indicador se torna disponível
-e a frequência de atualização devem ser confirmadas na documentação oficial.
+A chave candidata inclui também `NU_ANO_REFERENCIA` para identificar uma observação anual. A auditoria da base Silver não encontrou duplicatas nessa combinação.
 
-O experimento usa anos de referência anteriores a 2024 para treino e 2024
-para teste. Isso simula uma previsão sobre registros do ano de referência
-2024 a partir de registros de anos anteriores, mas não garante separação
-por instituição, curso ou coorte.
+## Cobertura e volume
 
-## Qualidade já verificada
+A base Silver é formada por arquivos anuais de coortes de ingresso, de 2010 a 2020, com 2.731.155 linhas no total.
 
-- Ausências em `TDA`: zero.
-- Valores de `TDA` fora do intervalo [0, 100]: zero.
-- Duplicatas na chave candidata: zero.
-- A base Silver auditada tem 31 colunas.
+A construção dos pares produziu 2.407.858 observações:
+- Treinamento: 2.217.370 pares, com ano de origem até 2022.
+- Teste: 190.488 pares, com ano de origem 2023 e alvo referente a 2024.
 
-A ausência de valores em outras variáveis existe e deve ser quantificada
-na execução do notebook. Não interpretar ausência como zero sem justificativa.
+## Alvo e partição temporal
 
-## Variáveis do modelo atual
+Alvo: `TADA_FUTURA`, com valores no intervalo de 0 a 100.
 
-Preditoras categóricas:
-`TP_CATEGORIA_ADMINISTRATIVA`, `TP_ORGANIZACAO_ACADEMICA`,
-`TP_GRAU_ACADEMICO`, `TP_MODALIDADE_ENSINO`, `CO_REGIAO`, `CO_UF`,
-`CO_CINE_AREA_GERAL`.
+A partição separa os pares pelo ano de origem. O teste utiliza origem em 2023 para avaliar a previsão do valor futuro referente a 2024. A separação temporal evita treinar com pares de origem posteriores ao período de teste, mas não representa necessariamente uma avaliação de generalização para instituições, cursos ou coortes nunca vistos.
 
-Preditoras numéricas:
-`NU_ANO_INGRESSO`, `QT_INGRESSANTE`.
+## Qualidade e limitações
 
-Alvo: `TDA`. `NU_ANO_REFERENCIA` é usado para definir a partição, não como
-preditor no script atual.
+As auditorias realizadas indicaram:
+- Nenhum valor ausente em TADA na base Silver examinada.
+- Nenhum valor de TADA fora do intervalo de 0 a 100.
+- Nenhuma duplicata na chave candidata auditada.
+- Nenhuma duplicata na chave utilizada para construir os pares.
 
-## Diagnóstico preliminar de vazamento
+Essas verificações devem ser interpretadas dentro do escopo das bases e dos scripts executados. A existência de dados ausentes em outras variáveis deve ser verificada conforme o conjunto de preditores usado em cada modelo.
 
-| Variável | Decisão preliminar | Justificativa e ressalva |
-|---|---|---|
-| `TP_CATEGORIA_ADMINISTRATIVA` | Potencialmente permitida | Pode ser conhecida antes da previsão; confirmar estabilidade temporal. |
-| `TP_ORGANIZACAO_ACADEMICA` | Potencialmente permitida | Deve estar disponível no corte e corresponder à classificação histórica. |
-| `CO_UF` | Potencialmente permitida | Localização pode ser conhecida antes da previsão. |
-| `NU_ANO_INGRESSO` | Potencialmente permitida | Coorte conhecida, mas a utilidade depende do cenário de previsão. |
-| `QT_INGRESSANTE` | Condicional | Usar apenas se o total estiver disponível no instante de previsão e não for calculado posteriormente. |
-| `NU_ANO_REFERENCIA` | Não usar como preditora no modelo atual | É usado para definir treino e teste; seu uso direto pode permitir que o modelo explore tendências temporais específicas. |
-| `TDA` | Proibida como preditora | É o próprio alvo. |
-| `QT_DESISTENCIA` | Proibida até verificar o corte | Pode ser parte do cálculo ou consequência do processo que gera a TDA. |
-| `NU_ANO_MAXIMO_ACOMPANHAMENTO` | Condicional/provável risco temporal | Pode conter informação do horizonte futuro de acompanhamento. |
-| `QT_CONCLUINTE` | Condicional/provável risco temporal | Pode refletir resultados observados após o momento de previsão. |
+## Risco de vazamento e interpretação
 
-A classificação é preliminar. Para a entrega, a equipe deve verificar a
-documentação das variáveis e definir um instante operacional de previsão.
-A variável proibida por ser consequência da decisão precisa ser descrita
-com base no cenário real do projeto, não apenas presumida.
+A construção do alvo futuro exige garantir que as variáveis preditoras estejam disponíveis no momento em que a previsão seria feita. Variáveis que só se tornam conhecidas após o período de origem não devem ser utilizadas como preditoras.
 
-## Limitações remanescentes
+A inclusão da TADA atual como preditora permite comparar o modelo com uma estratégia de persistência, que utiliza o valor atual como previsão do futuro. A validade dessa comparação depende de a TADA atual estar disponível no momento previsto para uso.
 
-- Confirmar fonte oficial, licença, data de extração e atualização.
-- Definir a decisão concreta que a previsão apoiaria e o corte operacional.
-- Avaliar partição por grupo/coorte ou uma estratégia temporal mais rigorosa.
-- Definir baseline operacional e custos/capacidade a partir do Canvas da equipe.
-- Documentar imputações, categorias, contagens antes/depois e transformações.
+A separação por ano de origem não impede que a mesma instituição, curso ou coorte apareça em treino e teste. Portanto, os resultados não devem ser interpretados como evidência de generalização para entidades inéditas.
+
+## Reprodutibilidade
+
+Os scripts de auditoria, construção de pares, modelagem e análise estão no diretório `code/`. Os dados locais estão organizados em `data/bronze/`, `data/silver/` e `data/gold/`, quando aplicável. Esses diretórios são ignorados pelo Git; a execução depende da presença dos arquivos de dados necessários.

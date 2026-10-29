@@ -24,3 +24,15 @@ venv/
 # Arquivos de sistema
 .DS_Store
 Thumbs.db
+
+# Previsões individuais de teste, geradas pelo modelo
+relatorios/previsoes_tada_teste.csv
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/

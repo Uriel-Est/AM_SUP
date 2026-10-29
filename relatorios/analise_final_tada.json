@@ -1,0 +1,79 @@
+{
+  "total_teste": 190488,
+  "ano_origem": 2023,
+  "ano_alvo": 2024,
+  "metricas_gerais": {
+    "persistencia": {
+      "MAE": 4.033113086044092,
+      "RMSE": 9.179219683792184,
+      "R2": -1.6647726292831253
+    },
+    "random_forest": {
+      "MAE": 6.439621198119322,
+      "RMSE": 8.177907142989243,
+      "R2": -1.1151101106285473
+    }
+  },
+  "faixas": [
+    {
+      "faixa_tada_futura": "0 a 1",
+      "quantidade": 122766,
+      "percentual_teste": 64.4481542144387,
+      "media_tada_real": 0.04511674738279328,
+      "mae_persistencia": 2.7282725094556226,
+      "mae_random_forest": 6.707399030351654,
+      "rmse_persistencia": 7.895432544767635,
+      "rmse_random_forest": 7.971202999481964
+    },
+    {
+      "faixa_tada_futura": "Acima de 1 a 5",
+      "quantidade": 41810,
+      "percentual_teste": 21.94888916887153,
+      "media_tada_real": 2.6697860564632863,
+      "mae_persistencia": 4.199463908300502,
+      "mae_random_forest": 5.587973854757123,
+      "rmse_persistencia": 7.9424037349260725,
+      "rmse_random_forest": 6.713766417458719
+    },
+    {
+      "faixa_tada_futura": "Acima de 5 a 10",
+      "quantidade": 14977,
+      "percentual_teste": 7.86243752887321,
+      "media_tada_real": 7.101882676869733,
+      "mae_persistencia": 5.940551826160313,
+      "mae_random_forest": 3.672152427361136,
+      "rmse_persistencia": 8.875092171663361,
+      "rmse_random_forest": 4.679718456187198
+    },
+    {
+      "faixa_tada_futura": "Acima de 10 a 20",
+      "quantidade": 7417,
+      "percentual_teste": 3.89368359161732,
+      "media_tada_real": 13.972285713172443,
+      "mae_persistencia": 9.389464752542942,
+      "mae_random_forest": 4.570756046280139,
+      "rmse_persistencia": 11.466804722419603,
+      "rmse_random_forest": 5.8076742578764415
+    },
+    {
+      "faixa_tada_futura": "Acima de 20 a 50",
+      "quantidade": 3229,
+      "percentual_teste": 1.6951199025660408,
+      "media_tada_real": 30.054149856014245,
+      "mae_persistencia": 25.1161484094537,
+      "mae_random_forest": 20.071992317365602,
+      "rmse_persistencia": 27.333174527608485,
+      "rmse_random_forest": 21.964977373852005
+    },
+    {
+      "faixa_tada_futura": "Acima de 50 a 100",
+      "quantidade": 289,
+      "percentual_teste": 0.15171559363319473,
+      "media_tada_real": 65.55080142608996,
+      "mae_persistencia": 62.3792686794256,
+      "mae_random_forest": 54.96622445392986,
+      "rmse_persistencia": 64.23354779379534,
+      "rmse_random_forest": 56.37031075092426
+    }
+  ]
+}
