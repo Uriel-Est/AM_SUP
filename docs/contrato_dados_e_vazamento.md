@@ -1,4 +1,4 @@
-﻿# Contrato de dados e auditoria
+# Contrato de dados e auditoria
 
 ## 1. Objetivo
 
@@ -109,11 +109,10 @@ Os diretórios `data/bronze/`, `data/silver/` e `data/gold/` são locais e ignor
 
 Para completar a documentação da aquisição, devem ser registrados a data de obtenção dos arquivos, a versão da fonte, as etapas de transformação e os comandos utilizados para gerar os resultados. Os scripts e os relatórios precisam identificar claramente a execução a que cada métrica pertence.
 
-## 9. Limitações e próximos passos
+## 9. Limita??es e pr?ximos passos
 
-- Confirmar a versão e a data de obtenção dos arquivos originais.
+- Confirmar a vers?o e a data de obten??o dos arquivos originais.
 - Registrar os crit?rios de sele??o das vari?veis preditoras e sua correspond?ncia com o cen?rio de previs?o.
 - Manter separados os resultados dos diferentes experimentos.
-- Documentar o pré-processamento efetivamente aplicado em cada pipeline.
-- Interpretar os resultados considerando a concentração de valores baixos de TADA futura e a sobreposição de instituições, cursos e coortes entre treino e teste.
-
+- Documentar o pr?-processamento efetivamente aplicado em cada pipeline.
+- Interpretar os resultados considerando a concentra??o de valores baixos de TADA futura e a sobreposi??o de institui??es, cursos e coortes entre treino e teste.
