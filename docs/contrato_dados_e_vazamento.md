@@ -116,3 +116,4 @@ Para completar a documentação da aquisição, devem ser registrados a data de 
 - Manter separados os resultados dos diferentes experimentos.
 - Documentar o pré-processamento efetivamente aplicado em cada pipeline.
 - Interpretar os resultados considerando a concentração de valores baixos de TADA futura e a sobreposição de instituições, cursos e coortes entre treino e teste.
+
