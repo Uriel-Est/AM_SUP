@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 import json
 import gc
@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
 PASTA = Path("data/silver/fluxo_educacao_superior")
-RELATORIOS = Path("relatorios")
+RELATORIOS = Path("reports/metrics")
 RELATORIOS.mkdir(parents=True, exist_ok=True)
 
 CHAVE = [
@@ -95,7 +95,7 @@ X_teste = dados.loc[teste, preditoras]
 y_teste = dados.loc[teste, "TADA_FUTURA"]
 
 if len(X_treino) == 0 or len(X_teste) == 0:
-    raise ValueError("Treino ou teste está vazio.")
+    raise ValueError("Treino ou teste estÃ¡ vazio.")
 
 resultados = {
     "registros_pares": int(len(dados)),
@@ -111,7 +111,7 @@ salvar(resultados)
 def avaliar(nome, modelo):
     print(f"\nTreinando {nome}...", flush=True)
     modelo.fit(X_treino, y_treino)
-    print(f"Calculando previsões de {nome}...", flush=True)
+    print(f"Calculando previsÃµes de {nome}...", flush=True)
     previsoes = modelo.predict(X_teste)
 
     metricas = {
@@ -173,5 +173,7 @@ rf = Pipeline([
 
 avaliar("random_forest", rf)
 
-print("\nEtapa 5/5: concluído.", flush=True)
-print(f"Relatório final: {arquivo_json}", flush=True)
+print("\nEtapa 5/5: concluÃ­do.", flush=True)
+print(f"RelatÃ³rio final: {arquivo_json}", flush=True)
+
+

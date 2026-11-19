@@ -1,0 +1,62 @@
+﻿
+code\analisar_comparacao_final_tada.py:13:df = pd.read_csv(ARQUIVO)
+code\analisar_comparacao_final_tada.py:82:tabela.to_csv(
+code\analisar_erros_tada.py:17:    [pd.read_parquet(f, columns=colunas) for f in arquivos],
+code\analisar_erros_tada.py:83:resumo.to_csv(arquivo, encoding="utf-8-sig")
+code\auditar_base_completa.py:19:    df = pd.read_parquet(arquivo)
+code\auditar_pares_tada.py:19:    partes.append(pd.read_parquet(arquivo, columns=colunas))
+code\auditar_particao.py:37:df = pd.read_parquet(GOLD)
+code\bronze_fluxo_ensino_superior.py:233:        with destino.open('wb') as f, tqdm(
+code\bronze_fluxo_ensino_superior.py:271:            with z.open(entrada) as src, alvo.open('wb') as dst:
+code\modelo_baseline_tada_completo.py:49:    [pd.read_parquet(f, columns=COLUNAS) for f in arquivos],
+code\modelo_baseline_tada_futura.py:52:df = pd.read_parquet(ARQUIVO)
+code\modelo_baseline_tada_futura.py:193:base_gold.to_parquet(
+code\modelo_baseline_tda.py:69:    if "__file__" in globals():
+code\modelo_baseline_tda.py:70:        script = Path(__file__).resolve()
+code\modelo_baseline_tda.py:139:    df = pd.read_parquet(ARQUIVO)
+code\modelo_baseline_tda.py:307:    pares.to_parquet(
+code\modelo_baseline_tda.py:700:    pd.DataFrame(folds).to_csv(
+code\modelo_baseline_tda.py:718:    previsoes.to_csv(
+code\modelo_baseline_tda.py:734:    ).to_csv(
+code\modelo_tada_duas_etapas.py:14:ROOT = Path(__file__).resolve().parents[1]
+code\modelo_tada_duas_etapas.py:15:DATA_DIR = ROOT / "data" / "silver" / "fluxo_educacao_superior"
+code\modelo_tada_duas_etapas.py:16:OUT_JSON = ROOT / "reports" / "tada_duas_etapas.json"
+code\modelo_tada_duas_etapas.py:17:OUT_CSV = ROOT / "reports" / "tada_duas_etapas_previsoes.csv"
+code\modelo_tada_duas_etapas.py:68:        d = pd.read_parquet(f)
+code\modelo_tada_duas_etapas.py:154:    OUT_JSON.write_text(json.dumps(result, indent=2, ensure_ascii=False), 
+encoding="utf-8")
+code\modelo_tada_duas_etapas.py:155:    out.to_csv(OUT_CSV, index=False, encoding="utf-8-sig")
+code\modelo_tada_duas_etapas.py:156:    print(f"\nRelatorio salvo: {OUT_JSON}")
+code\modelo_tada_duas_etapas.py:157:    print(f"Previsoes salvas: {OUT_CSV}")
+code\modelo_tada_persistencia.py:16:ROOT = Path(__file__).resolve().parents[1]
+code\modelo_tada_persistencia.py:17:DATA_DIR = ROOT / "data" / "silver" / "fluxo_educacao_superior"
+code\modelo_tada_persistencia.py:18:OUT_JSON = ROOT / "reports" / "comparacao_tada_persistencia.json"
+code\modelo_tada_persistencia.py:19:OUT_CSV = ROOT / "reports" / "previsoes_tada_teste.csv"
+code\modelo_tada_persistencia.py:93:        df = pd.read_parquet(arquivo, columns=colunas_necessarias)
+code\modelo_tada_persistencia.py:208:    with OUT_JSON.open("w", encoding="utf-8") as f:
+code\modelo_tada_persistencia.py:210:    previsoes.to_csv(OUT_CSV, index=False, encoding="utf-8-sig")
+code\modelo_tada_persistencia.py:213:    print(f"\nRelatório salvo: {OUT_JSON}")
+code\modelo_tada_persistencia.py:214:    print(f"Previsões salvas: {OUT_CSV}")
+code\rf_tada_experimento.py:16:ROOT = Path(__file__).resolve().parents[1]
+code\rf_tada_experimento.py:17:DATA_DIR = ROOT / "data" / "silver" / "fluxo_educacao_superior"
+code\rf_tada_experimento.py:18:OUT_JSON = ROOT / "reports" / "rf_tada_experimento.json"
+code\rf_tada_experimento.py:19:OUT_CSV = ROOT / "reports" / "rf_tada_previsoes_teste.csv"
+code\rf_tada_experimento.py:94:        frames.append(pd.read_parquet(file, columns=needed))
+code\rf_tada_experimento.py:177:    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+code\rf_tada_experimento.py:178:    OUT_JSON.write_text(json.dumps(results, indent=2, ensure_ascii=False), 
+encoding="utf-8")
+code\rf_tada_experimento.py:179:    out.to_csv(OUT_CSV, index=False, encoding="utf-8-sig")
+code\rf_tada_experimento.py:180:    print(f"\nRelatório salvo: {OUT_JSON}")
+code\rf_tada_experimento.py:181:    print(f"Previsões salvas: {OUT_CSV}")
+code\silver_fluxo_ensino_superior.py:81:            df.to_parquet(tmp, engine="pyarrow", index=False)
+code\xgb_tada_experimento.py:12:ROOT = Path(__file__).resolve().parents[1]
+code\xgb_tada_experimento.py:13:DATA_DIR = ROOT / "data" / "silver" / "fluxo_educacao_superior"
+code\xgb_tada_experimento.py:14:OUT_JSON = ROOT / "reports" / "xgb_tada_experimento.json"
+code\xgb_tada_experimento.py:15:OUT_CSV = ROOT / "reports" / "xgb_tada_previsoes_teste.csv"
+code\xgb_tada_experimento.py:63:        partes.append(pd.read_parquet(arquivo, columns=colunas))
+code\xgb_tada_experimento.py:196:    with OUT_JSON.open("w", encoding="utf-8") as f:
+code\xgb_tada_experimento.py:198:    previsoes.to_csv(OUT_CSV, index=False, encoding="utf-8-sig")
+code\xgb_tada_experimento.py:201:    print(f"Relatório salvo: {OUT_JSON}")
+code\xgb_tada_experimento.py:202:    print(f"Previsões salvas: {OUT_CSV}")
+
+

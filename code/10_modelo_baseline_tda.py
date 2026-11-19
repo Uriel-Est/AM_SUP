@@ -1,11 +1,11 @@
-
+﻿
 """
 
 Corte simulado: indicadores observados no ano t -> TDA no ano t+1.
 Com o parquet 2020-2024, a coorte e 2020 e a avaliacao final e 2024.
 
-IMPORTANTE: é uma validação retrospectiva; as datas de publicação/revisão
-histórica pelo Inep precisam ser verificadas antes de alegar previsão real.
+IMPORTANTE: Ã© uma validaÃ§Ã£o retrospectiva; as datas de publicaÃ§Ã£o/revisÃ£o
+histÃ³rica pelo Inep precisam ser verificadas antes de alegar previsÃ£o real.
 
 Dependencias: pandas numpy pyarrow scikit-learn matplotlib joblib
 """
@@ -91,7 +91,7 @@ ARQUIVO = (
 )
 
 GOLD = RAIZ / "data/gold/fluxo_educacao_superior"
-REL = RAIZ / "relatorios"
+REL = RAIZ / "reports"
 
 GOLD.mkdir(parents=True, exist_ok=True)
 REL.mkdir(parents=True, exist_ok=True)
@@ -390,7 +390,7 @@ def calcular_metricas(y, pred, nome, particao):
         100
     )
 
-    # Residuo positivo: modelo subestimou a desistência.
+    # Residuo positivo: modelo subestimou a desistÃªncia.
     erro = y - pred
 
     return {
@@ -857,3 +857,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

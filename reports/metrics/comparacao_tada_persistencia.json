@@ -1,0 +1,292 @@
+{
+  "objetivo": "Prever TADA no ano seguinte usando apenas informações do ano de origem.",
+  "definicao_temporal": "origem t; alvo t+1; teste 2023 -> 2024",
+  "n_pares_total": 2407858,
+  "n_treino_final": 2217370,
+  "n_treino_final_utilizado_modelo": 100000,
+  "n_teste": 190488,
+  "anos_validacao": [
+    2021,
+    2022
+  ],
+  "metricas_persistencia_validacao": {
+    "2021": {
+      "persistencia": {
+        "MAE": 5.869458654068583,
+        "RMSE": 12.27287693321511,
+        "R2": -0.9926764636883008
+      }
+    },
+    "2022": {
+      "persistencia": {
+        "MAE": 5.188781185820064,
+        "RMSE": 10.847284498686335,
+        "R2": -1.0865155238436106
+      }
+    }
+  },
+  "configuracoes_validacao": [
+    {
+      "modelo": "Ridge",
+      "alpha": 0.1,
+      "ano_validacao": 2021,
+      "MAE": 4.517934365968712,
+      "RMSE": 7.756795021446512,
+      "R2": 0.2040080738086426
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 1.0,
+      "ano_validacao": 2021,
+      "MAE": 4.517593606043809,
+      "RMSE": 7.756519024471175,
+      "R2": 0.20406471768152046
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 10.0,
+      "ano_validacao": 2021,
+      "MAE": 4.514141903331054,
+      "RMSE": 7.753754960054278,
+      "R2": 0.2046318856064765
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 100.0,
+      "ano_validacao": 2021,
+      "MAE": 4.482813344168072,
+      "RMSE": 7.730891507309556,
+      "R2": 0.2093155648286279
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.001,
+      "ano_validacao": 2021,
+      "MAE": 4.512590134983504,
+      "RMSE": 7.753476660230734,
+      "R2": 0.2046889797072412
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.01,
+      "ano_validacao": 2021,
+      "MAE": 4.471983388558069,
+      "RMSE": 7.730842967810472,
+      "R2": 0.20932549364625397
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.1,
+      "ano_validacao": 2021,
+      "MAE": 4.246028715436546,
+      "RMSE": 7.698352909363065,
+      "R2": 0.21595739133533687
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.001,
+      "ano_validacao": 2021,
+      "MAE": 4.496946406930741,
+      "RMSE": 7.7411664332614,
+      "R2": 0.2072124120778911
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.01,
+      "ano_validacao": 2021,
+      "MAE": 4.382472128661093,
+      "RMSE": 7.695130063988331,
+      "R2": 0.2166137185273208
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.1,
+      "ano_validacao": 2021,
+      "MAE": 4.615687473150089,
+      "RMSE": 8.126527746693757,
+      "R2": 0.1263166132868232
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 0.1,
+      "ano_validacao": 2022,
+      "MAE": 4.135785248977824,
+      "RMSE": 7.282553862748572,
+      "R2": 0.059525619492708515
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 1.0,
+      "ano_validacao": 2022,
+      "MAE": 4.135507785441815,
+      "RMSE": 7.282263693613922,
+      "R2": 0.059600563312030896
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 10.0,
+      "ano_validacao": 2022,
+      "MAE": 4.132733547420092,
+      "RMSE": 7.279381598363234,
+      "R2": 0.06034477816982198
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 100.0,
+      "ano_validacao": 2022,
+      "MAE": 4.106243227256169,
+      "RMSE": 7.253383167007085,
+      "R2": 0.06704478040556283
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.001,
+      "ano_validacao": 2022,
+      "MAE": 4.130064478379825,
+      "RMSE": 7.277058450721971,
+      "R2": 0.06094444709698443
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.01,
+      "ano_validacao": 2022,
+      "MAE": 4.091649969442761,
+      "RMSE": 7.24644445853046,
+      "R2": 0.06882888798954867
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.1,
+      "ano_validacao": 2022,
+      "MAE": 3.7963642058530813,
+      "RMSE": 7.070318894744361,
+      "R2": 0.11354322557360574
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.001,
+      "ano_validacao": 2022,
+      "MAE": 4.11756562106012,
+      "RMSE": 7.264602549157533,
+      "R2": 0.06415639684559282
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.01,
+      "ano_validacao": 2022,
+      "MAE": 3.9971662272424453,
+      "RMSE": 7.161080723055812,
+      "R2": 0.09063821966395913
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.1,
+      "ano_validacao": 2022,
+      "MAE": 3.9988886493567315,
+      "RMSE": 7.137697025527307,
+      "R2": 0.09656735903611247
+    }
+  ],
+  "ranking_configuracoes": [
+    {
+      "modelo": "Lasso",
+      "alpha": 0.1,
+      "MAE_validacao_medio": 4.021196460644814,
+      "RMSE_validacao_medio": 7.384335902053713,
+      "R2_validacao_medio": 0.1647503084544713
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.01,
+      "MAE_validacao_medio": 4.189819177951769,
+      "RMSE_validacao_medio": 7.428105393522071,
+      "R2_validacao_medio": 0.15362596909563997
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.01,
+      "MAE_validacao_medio": 4.281816679000415,
+      "RMSE_validacao_medio": 7.488643713170466,
+      "R2_validacao_medio": 0.13907719081790132
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 100.0,
+      "MAE_validacao_medio": 4.29452828571212,
+      "RMSE_validacao_medio": 7.49213733715832,
+      "R2_validacao_medio": 0.13818017261709536
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.001,
+      "MAE_validacao_medio": 4.30725601399543,
+      "RMSE_validacao_medio": 7.502884491209466,
+      "R2_validacao_medio": 0.13568440446174196
+    },
+    {
+      "modelo": "ElasticNet",
+      "alpha": 0.1,
+      "MAE_validacao_medio": 4.30728806125341,
+      "RMSE_validacao_medio": 7.632112386110531,
+      "R2_validacao_medio": 0.11144198616146783
+    },
+    {
+      "modelo": "Lasso",
+      "alpha": 0.001,
+      "MAE_validacao_medio": 4.321327306681664,
+      "RMSE_validacao_medio": 7.515267555476353,
+      "R2_validacao_medio": 0.13281671340211282
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 10.0,
+      "MAE_validacao_medio": 4.323437725375573,
+      "RMSE_validacao_medio": 7.516568279208756,
+      "R2_validacao_medio": 0.13248833188814924
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 1.0,
+      "MAE_validacao_medio": 4.326550695742812,
+      "RMSE_validacao_medio": 7.519391359042549,
+      "R2_validacao_medio": 0.13183264049677568
+    },
+    {
+      "modelo": "Ridge",
+      "alpha": 0.1,
+      "MAE_validacao_medio": 4.326859807473268,
+      "RMSE_validacao_medio": 7.519674442097542,
+      "R2_validacao_medio": 0.13176684665067556
+    }
+  ],
+  "melhor_configuracao": {
+    "modelo": "Lasso",
+    "alpha": 0.1
+  },
+  "metricas_teste_2023_2024": {
+    "persistencia": {
+      "MAE": 4.033113086044092,
+      "RMSE": 9.179219683792182,
+      "R2": -1.6647726292831249
+    },
+    "Lasso_alpha_0.1": {
+      "MAE": 3.061429962817441,
+      "RMSE": 5.58613258060855,
+      "R2": 0.01310463515807192
+    }
+  },
+  "features": [
+    "TP_CATEGORIA_ADMINISTRATIVA",
+    "TP_ORGANIZACAO_ACADEMICA",
+    "TP_GRAU_ACADEMICO",
+    "TP_MODALIDADE_ENSINO",
+    "CO_REGIAO",
+    "CO_UF",
+    "CO_CINE_AREA_GERAL",
+    "NU_ANO_INGRESSO",
+    "TADA",
+    "QT_INGRESSANTE",
+    "ANO_ORIGEM"
+  ],
+  "nota": "Teste final reservado: origem 2023 e alvo 2024. Configuração escolhida apenas com validações 2021 e 2022."
+}

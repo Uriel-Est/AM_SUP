@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -37,16 +37,16 @@ dados = origem.merge(
 
 teste = dados[dados["NU_ANO_REFERENCIA"] == 2023].copy()
 
-# Persistência: previsão igual à TADA do ano de origem.
+# PersistÃªncia: previsÃ£o igual Ã  TADA do ano de origem.
 teste["PREV_PERSISTENCIA"] = teste["TADA"]
 
-# Erros absolutos e quadráticos.
+# Erros absolutos e quadrÃ¡ticos.
 teste["ERRO_PERSISTENCIA"] = (
     teste["TADA_FUTURA"] - teste["PREV_PERSISTENCIA"]
 ).abs()
 
-# O JSON contém as métricas agregadas do Random Forest,
-# mas não suas previsões individuais.
+# O JSON contÃ©m as mÃ©tricas agregadas do Random Forest,
+# mas nÃ£o suas previsÃµes individuais.
 print("Registros no teste:", len(teste))
 print("\nFaixas de TADA futura:")
 
@@ -76,15 +76,17 @@ resumo = teste.groupby(
 resumo = resumo.round(4)
 print(resumo.to_string())
 
-saida = Path("relatorios")
+saida = Path("reports/audit")
 saida.mkdir(parents=True, exist_ok=True)
 
 arquivo = saida / "erros_persistencia_por_faixa.csv"
 resumo.to_csv(arquivo, encoding="utf-8-sig")
 
-print(f"\nRelatório salvo em: {arquivo}")
+print(f"\nRelatÃ³rio salvo em: {arquivo}")
 print(
-    "\nObservação: este relatório analisa a persistência. "
+    "\nObservaÃ§Ã£o: este relatÃ³rio analisa a persistÃªncia. "
     "Para analisar o Random Forest por faixa, precisamos "
-    "guardar suas previsões individuais."
+    "guardar suas previsÃµes individuais."
 )
+
+

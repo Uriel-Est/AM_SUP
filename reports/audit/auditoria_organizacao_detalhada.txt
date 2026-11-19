@@ -1,0 +1,303 @@
+﻿===== SCRIPTS PYTHON: NOMES, TAMANHO E LINHAS =====
+
+Arquivo                           Linhas    KB
+-------                           ------    --
+analisar_comparacao_final_tada.py    124  3,15
+analisar_erros_tada.py                90  2,16
+auditar_base_completa.py              89  2,18
+auditar_pares_tada.py                 83  1,88
+auditar_particao.py                  123  4,68
+bronze_fluxo_ensino_superior.py      390 14,59
+modelo_baseline_tada_completo.py     177  5,05
+modelo_baseline_tada_futura.py       380  9,74
+modelo_baseline_tda.py               859 18,61
+modelo_tada_duas_etapas.py           160     8
+modelo_tada_persistencia.py          219   8,6
+rf_tada_experimento.py               186  7,67
+silver_fluxo_ensino_superior.py      163  4,48
+xgb_tada_experimento.py              206  8,32
+
+
+
+
+===== README ATUAL =====
+# AM_SUP | Aprendizagem de Máquina Supervisionada
+
+Repositório do projeto aplicado da disciplina Aprendizagem de Máquina Supervisionada, UFPB/CCSA, período 2026.2.
+
+## Objetivo
+
+Investigar a previsão da Taxa de Desistência Anual (TADA) futura a partir de indicadores públicos da trajetória da educação superior. O projeto tem caráter exploratório e não constitui um sistema validado para decisões operacionais.
+
+## Dados e preparação
+
+A base Silver contém arquivos Parquet organizados por coorte de ingresso e ano de referência. A auditoria considera a chave candidata `CO_IES`, `CO_CURSO`, `NU_ANO_INGRESSO` e `NU_ANO_REFERENCIA`.
+
+A construção dos pares temporais resultou em 2.407.858 observações para prever a TADA do ano seguinte.
+
+- Treinamento: anos de origem até 2022, com 2.217.370 registros.
+- Teste: ano de origem 2023, para prever o alvo de 2024, com 190.488 registros.
+- Variável-alvo: `TADA_FUTURA`.
+- Modelos comparados: persistência e Random Forest.
+
+A fonte oficial exata, a data de obtenção e as condições de uso dos dados ainda precisam ser registradas após conferência documental.
+
+## Estrutura do repositório
+
+- `code/`: scripts de preparação, auditoria, modelagem e análise.
+- `data/bronze/`: dados originais, quando disponíveis.
+- `data/silver/`: dados tratados em Parquet.
+- `data/gold/`: dados preparados para modelagem, quando aplicável.
+- `notebooks/`: notebooks de exploração e análise, incluindo experimentos históricos.
+- `docs/`: documentação metodológica e contratos de dados.
+- `relatorios/`: métricas, auditorias e análises finais.
+
+Os diretórios locais de dados são ignorados pelo Git devido ao tamanho. A execução depende da presença dos arquivos de dados necessários.
+
+## Como executar
+
+No PowerShell, abra o terminal na raiz do repositório e instale as dependências:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Para reproduzir a comparação final, com os dados Silver e os arquivos necessários já disponíveis, execute:
+
+```powershell
+python code/modelo_tada_persistencia.py
+python code/analisar_comparacao_final_tada.py
+```
+
+A construção da base depende das etapas anteriores de preparação dos dados. O script Bronze pode baixar arquivos grandes; execute-o apenas se precisar obter novamente os dados originais. Os scripts usam caminhos relativos à raiz do repositório.
+
+## Resultados da avaliação
+
+| Métrica | Persistência | Random Forest |
+|---|---:|---:|
+| MAE | 4,0331 | 6,4396 |
+| RMSE | 9,1792 | 8,1779 |
+| R² | -1,6648 | -1,1151 |
+
+A persistência apresentou menor erro absoluto médio (MAE), enquanto a Random Forest apresentou menor RMSE e R² menos negativo. Os dois modelos tiveram R² negativo. Isso indica que, na avaliação realizada, ambos foram inferiores ao preditor de referência baseado na média do alvo, segundo essa métrica.
+
+Na análise por faixa, a persistência apresentou menor MAE para TADA futura até 5. Nas faixas acima de 5, a Random Forest apresentou menor MAE. Os erros permaneceram elevados nos valores extremos.
+
+Arquivos de resultados:
+
+- `relatorios/comparacao_tada_persistencia.json`
+- `relatorios/comparacao_erros_por_faixa_tada.csv`
+- `relatorios/analise_final_tada.json`
+
+O arquivo `relatorios/previsoes_tada_teste.csv` contém previsões individuais e é mantido localmente, fora do versionamento, devido ao tamanho.
+
+## Limitações
+
+1. A avaliação considera um único ano de teste.
+2. A distribuição da TADA futura é concentrada em valores baixos, com poucos casos extremos.
+3. A divisão temporal não garante independência entre cursos ou instituições nos conjuntos de treino e teste.
+4. A disponibilidade temporal e a definição oficial das variáveis devem ser verificadas para evitar vazamento de informação.
+5. Os resultados não demonstram adequação para uso operacional ou tomada de decisão.
+6. A fonte oficial e as condições de uso precisam ser documentadas antes da entrega final.
+
+## Uso de IA generativa
+
+O ChatGPT foi utilizado como apoio à organização da documentação, estruturação de código e interpretação dos resultados. A equipe é responsável pela execução, verificação e compreensão dos arquivos entregues.
+
+## Integrantes e contribuições
+
+Preencher com os nomes completos dos integrantes e as contribuições efetivamente realizadas por cada pessoa.
+
+## Referências e rastreabilidade
+
+Registrar o endereço oficial da fonte dos dados, a data de obtenção, a versão dos arquivos e as condições de uso após verificação documental.
+
+===== DOCUMENTACAO DOCS =====
+
+--- contrato_dados_e_vazamento.md ---
+# Contrato de dados e auditoria
+
+## 1. Objetivo
+
+O experimento investiga a previsÃ£o da Taxa de DesistÃªncia Acumulada (TADA) futura em registros de trajetÃ³ria da educaÃ§Ã£o superior. A unidade de anÃ¡lise Ã© um par de observaÃ§Ãµes da mesma instituiÃ§Ã£o, curso e coorte de ingresso em anos de referÃªncia consecutivos.
+
+## 2. Fonte e arquivos de origem
+
+- **InstituiÃ§Ã£o responsÃ¡vel:** Instituto Nacional de Estudos e Pesquisas Educacionais AnÃ­sio Teixeira (Inep).
+- **Conjunto de dados:** Indicadores de TrajetÃ³ria da EducaÃ§Ã£o Superior.
+- **PÃ¡gina oficial:** https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/indicadores-de-trajetoria-da-educacao-superior
+- **DiretÃ³rio dos arquivos originais:** `data/bronze/fluxo_educacao_superior/`.
+- **Formato original identificado:** Excel (`.xlsx`).
+- **Formato processado:** Parquet (`.parquet`), armazenado em `data/silver/fluxo_educacao_superior/`.
+
+Foram identificados os seguintes arquivos locais de origem:
+
+- `indicadores_trajetoria_educacao_superior_2010_2019.xlsx`
+- `indicadores_trajetoria_educacao_superior_2011_2020.xlsx`
+- `indicadores_trajetoria_educacao_superior_2012_2021.xlsx`
+- `indicadores_trajetoria_educacao_superior_2013_2022.xlsx`
+- `indicadores_trajetoria_educacao_superior_2014_2023.xlsx`
+- `indicadores_trajetoria_educacao_superior_2015_2024.xlsx`
+- `indicadores_trajetoria_educacao_superior_2016_2024.xlsx`
+- `indicadores_trajetoria_educacao_superior_2017_2024.xlsx`
+- `indicadores_trajetoria_educacao_superior_2018_2024.xlsx`
+- `indicadores_trajetoria_educacao_superior_2019_2024.xlsx`
+- `indicadores_trajetoria_educacao_superior_2020_2024.xlsx`
+
+A presenÃ§a desses arquivos foi confirmada no ambiente local. A data de download, a versÃ£o exata publicada pelo Inep e as condiÃ§Ãµes de uso aplicÃ¡veis ainda precisam ser documentadas a partir dos arquivos e da fonte original.
+
+## 3. Chave e construÃ§Ã£o dos pares
+
+A chave de identificaÃ§Ã£o da trajetÃ³ria Ã© composta por:
+
+- `CO_IES`: cÃ³digo da instituiÃ§Ã£o de ensino superior.
+- `CO_CURSO`: cÃ³digo do curso.
+- `NU_ANO_INGRESSO`: ano de ingresso da coorte.
+
+A observaÃ§Ã£o anual Ã© identificada adicionalmente por `NU_ANO_REFERENCIA`. A auditoria nÃ£o encontrou duplicatas na combinaÃ§Ã£o da chave da trajetÃ³ria com o ano de referÃªncia.
+
+Cada observaÃ§Ã£o de origem Ã© associada Ã  observaÃ§Ã£o da mesma trajetÃ³ria no ano de referÃªncia seguinte. O alvo `TADA_FUTURA` corresponde Ã  TADA observada no ano seguinte.
+
+## 4. Cobertura, volume e partiÃ§Ã£o
+
+A auditoria da base Silver examinada registrou 2.731.155 linhas, com cobertura de coortes de ingresso de 2010 a 2020.
+
+A construÃ§Ã£o dos pares produziu 2.407.858 observaÃ§Ãµes:
+
+- **Treinamento:** 2.217.370 pares, com ano de origem atÃ© 2022.
+- **Teste:** 190.488 pares, com ano de origem 2023 e alvo referente a 2024.
+
+A separaÃ§Ã£o temporal simula a previsÃ£o de um perÃ­odo futuro em relaÃ§Ã£o ao treinamento. Entretanto, nÃ£o impede a presenÃ§a das mesmas instituiÃ§Ãµes, cursos ou coortes nos dois conjuntos. Portanto, nÃ£o mede exclusivamente a generalizaÃ§Ã£o para entidades inÃ©ditas.
+
+## 5. Alvo e diagnÃ³stico de vazamento
+
+O alvo principal Ã© `TADA_FUTURA`, com valores entre 0 e 100. As variÃ¡veis preditoras devem representar informaÃ§Ãµes disponÃ­veis no momento da previsÃ£o, considerando o ano de origem.
+
+### ClassificaÃ§Ã£o de variÃ¡veis
+
+| VariÃ¡vel ou grupo | ClassificaÃ§Ã£o | Justificativa |
+|---|---|---|
+| `NU_ANO_INGRESSO` | Permitida, sujeita Ã  definiÃ§Ã£o do cenÃ¡rio | Informa o ano de ingresso da coorte e pode estar disponÃ­vel no momento da previsÃ£o. |
+| `QT_INGRESSANTE` | Permitida, se referente ao perÃ­odo de origem | Representa informaÃ§Ã£o potencialmente disponÃ­vel no inÃ­cio ou durante o acompanhamento da trajetÃ³ria. |
+| `TP_CATEGORIA_ADMINISTRATIVA`, `TP_ORGANIZACAO_ACADEMICA`, `TP_GRAU_ACADEMICO` e `TP_MODALIDADE_ENSINO` | Permitidas, se disponÃ­veis na origem | Caracterizam a instituiÃ§Ã£o ou o curso, mas sua disponibilidade temporal deve ser confirmada. |
+| `TADA_FUTURA` ou qualquer variÃ¡vel calculada a partir do alvo futuro | Vazamento direto, proibida como preditora | ContÃ©m a prÃ³pria informaÃ§Ã£o que o modelo deve prever. |
+| `QT_CONCLUINTE` ou `QT_DESISTENCIA` referente ao ano futuro | Vazamento temporal, proibida como preditora | Representa acontecimentos posteriores ao momento em que a previsÃ£o seria realizada. |
+| VariÃ¡veis registradas somente apÃ³s uma decisÃ£o ou acontecimento futuro | Vazamento temporal ou de consequÃªncia, proibidas como preditoras | NÃ£o estariam disponÃ­veis no cenÃ¡rio operacional de previsÃ£o. |
+
+A classificaÃ§Ã£o Ã© condicional Ã  referÃªncia temporal de cada coluna. Antes da modelagem definitiva, deve-se confirmar se as variÃ¡veis sÃ£o extraÃ­das do ano de origem ou do ano futuro. O nome de uma coluna, isoladamente, nÃ£o comprova sua disponibilidade temporal.
+
+### TADA atual e persistÃªncia
+
+A TADA observada no ano de origem pode ser usada como preditora quando estiver disponÃ­vel naquele momento. A estratÃ©gia de persistÃªncia utiliza a TADA atual como previsÃ£o da TADA futura e funciona como referÃªncia operacional.
+
+Essa estratÃ©gia nÃ£o deve ser confundida com um modelo que recebe informaÃ§Ãµes do ano futuro. A validade da comparaÃ§Ã£o depende de a TADA atual estar disponÃ­vel no cenÃ¡rio previsto.
+
+## 6. Qualidade e limitaÃ§Ãµes
+
+As auditorias realizadas registraram:
+
+- Nenhum valor ausente em TADA na base Silver examinada.
+- Nenhum valor de TADA fora do intervalo de 0 a 100.
+- Nenhuma duplicata na chave candidata auditada.
+- Nenhuma duplicata na chave utilizada para construir os pares.
+
+Esses resultados nÃ£o significam que todas as variÃ¡veis estejam completas. A auditoria do arquivo `indicadores_trajetoria_educacao_superior_2020_2024.parquet`, por exemplo, registrou 26.230 ausÃªncias em cada uma das colunas `CO_REGIAO`, `CO_UF` e `CO_MUNICIPIO`, em uma base com 174.240 linhas.
+
+O tratamento de ausÃªncias deve ser definido conforme os preditores utilizados. A imputaÃ§Ã£o, codificaÃ§Ã£o e demais transformaÃ§Ãµes devem ser ajustadas somente com os dados de treinamento e aplicadas posteriormente ao teste.
+
+## 7. Resultados dos baselines
+
+O relatÃ³rio de qualidade registra a comparaÃ§Ã£o entre persistÃªncia e Random Forest para 190.488 pares de teste, com origem em 2023 e alvo em 2024.
+
+| Modelo | MAE | RMSE | RÂ² |
+|---|---:|---:|---:|
+| PersistÃªncia | 4,0331 | 9,1792 | -1,6648 |
+| Random Forest | 6,4396 | 8,1779 | -1,1151 |
+
+A persistÃªncia apresenta menor erro absoluto mÃ©dio, enquanto o Random Forest apresenta menor RMSE e RÂ² menos negativo. Ambos apresentam RÂ² negativo, o que indica desempenho inferior ao baseline de referÃªncia baseado na mÃ©dia do alvo do teste, conforme a definiÃ§Ã£o usual dessa mÃ©trica.
+
+Esses nÃºmeros pertencem ao experimento documentado em `analise_final_tada.json` e `comparacao_tada_persistencia.json`. Os resultados de `baseline_tada_completo.json` e `baseline_tada_futura.json` correspondem a outras execuÃ§Ãµes e nÃ£o devem ser combinados com essa tabela sem uma justificativa metodolÃ³gica e a confirmaÃ§Ã£o de que os dados, alvos, partiÃ§Ãµes e preditores sÃ£o comparÃ¡veis.
+
+## 8. Reprodutibilidade
+
+Os scripts de auditoria, construÃ§Ã£o de pares, modelagem e anÃ¡lise estÃ£o no diretÃ³rio `code/`. Os relatÃ³rios e resultados estÃ£o no diretÃ³rio `relatorios/`.
+
+Os diretÃ³rios `data/bronze/`, `data/silver/` e `data/gold/` sÃ£o locais e ignorados pelo Git. A reproduÃ§Ã£o exige que os arquivos necessÃ¡rios estejam disponÃ­veis no ambiente de execuÃ§Ã£o.
+
+Para completar a documentaÃ§Ã£o da aquisiÃ§Ã£o, devem ser registrados a data de obtenÃ§Ã£o dos arquivos, a versÃ£o da fonte, as etapas de transformaÃ§Ã£o e os comandos utilizados para gerar os resultados. Os scripts e os relatÃ³rios precisam identificar claramente a execuÃ§Ã£o a que cada mÃ©trica pertence.
+
+## 9. LimitaÃ§Ãµes e prÃ³ximos passos
+
+- Confirmar a versÃ£o e a data de obtenÃ§Ã£o dos arquivos originais.
+- Registrar os critÃ©rios de seleÃ§Ã£o das variÃ¡veis preditoras e sua correspondÃªncia com o cenÃ¡rio de previsÃ£o.
+- Manter separados os resultados dos diferentes experimentos.
+- Documentar o prÃ©-processamento efetivamente aplicado em cada pipeline.
+- Interpretar os resultados considerando a concentraÃ§Ã£o de valores baixos de TADA futura e a sobreposiÃ§Ã£o de instituiÃ§Ãµes, cursos e coortes entre treino e teste.
+
+===== RELATORIOS ANTIGOS =====
+
+Name                                  Length LastWriteTime      
+----                                  ------ -------------      
+analise_final_tada.json                 2593 29/10/2026 09:27:49
+auditoria_notebook.json                 1752 28/10/2026 23:58:30
+baseline_tada_completo.json              471 29/10/2026 08:32:51
+baseline_tada_futura.json               1802 29/10/2026 00:20:53
+baseline_tda.json                       1120 27/10/2026 17:41:21
+comparacao_erros_por_faixa_tada.csv      924 29/10/2026 09:27:49
+comparacao_tada_persistencia.json        430 29/10/2026 09:25:52
+erros_persistencia_por_faixa.csv         278 29/10/2026 09:01:26
+execucao_silver.log                     1354 27/10/2026 16:49:25
+previsoes_tada_teste.csv            19641406 29/10/2026 09:25:54
+relatorio_qualidade.md                  4449 29/10/2026 09:38:06
+
+
+
+
+===== RELATORIOS NOVOS =====
+
+Name                                  Length LastWriteTime      
+----                                  ------ -------------      
+auditoria_estrutura_projeto.txt        15033 19/11/2026 11:09:12
+auditoria_organizacao_detalhada.txt    15500 19/11/2026 11:11:01
+comparacao_tada_persistencia.json       7570 19/11/2026 10:22:46
+previsoes_tada_teste.csv            11961031 19/11/2026 10:22:47
+rf_tada_experimento.json                1500 19/11/2026 10:39:04
+rf_tada_previsoes_teste.csv         17871878 19/11/2026 10:39:05
+tada_duas_etapas.json                   3229 19/11/2026 10:47:19
+tada_duas_etapas_previsoes.csv      13118857 19/11/2026 10:47:20
+xgb_tada_experimento.json               5293 19/11/2026 11:04:48
+xgb_tada_previsoes_teste.csv        11077570 19/11/2026 11:04:49
+
+
+
+
+===== ARQUIVOS RASTREADOS PELO GIT =====
+.gitignore
+README.md
+code/analisar_comparacao_final_tada.py
+code/analisar_erros_tada.py
+code/auditar_base_completa.py
+code/auditar_pares_tada.py
+code/auditar_particao.py
+code/bronze_fluxo_ensino_superior.py
+code/modelo_baseline_tada_completo.py
+code/modelo_baseline_tada_futura.py
+code/modelo_baseline_tda.py
+code/modelo_tada_persistencia.py
+code/silver_fluxo_ensino_superior.py
+docs/contrato_dados_e_vazamento.md
+notebooks/auditoria_baseline_tda.ipynb
+notebooks/auditoria_baseline_tda_executado.ipynb
+relatorios/analise_final_tada.json
+relatorios/auditoria_notebook.json
+relatorios/baseline_tada_completo.json
+relatorios/baseline_tada_futura.json
+relatorios/baseline_tda.json
+relatorios/comparacao_erros_por_faixa_tada.csv
+relatorios/comparacao_tada_persistencia.json
+relatorios/erros_persistencia_por_faixa.csv
+relatorios/execucao_silver.log
+relatorios/relatorio_qualidade.md
+requirements.txt
+
+===== FIM =====

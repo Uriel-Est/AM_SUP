@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 import json
 
@@ -31,7 +31,7 @@ PASTA_GOLD = (
     RAIZ / "data" / "gold" / "fluxo_educacao_superior"
 )
 
-PASTA_RELATORIOS = RAIZ / "relatorios"
+PASTA_RELATORIOS = RAIZ / "reports/metrics"
 
 PASTA_GOLD.mkdir(parents=True, exist_ok=True)
 PASTA_RELATORIOS.mkdir(parents=True, exist_ok=True)
@@ -45,7 +45,7 @@ print("1. Lendo a base Silver...")
 
 if not ARQUIVO.exists():
     raise FileNotFoundError(
-        f"Arquivo Silver não encontrado: {ARQUIVO}\n"
+        f"Arquivo Silver nÃ£o encontrado: {ARQUIVO}\n"
         "Execute o script a partir da pasta raiz AM_SUP."
     )
 
@@ -92,27 +92,27 @@ colunas_ausentes = [
 
 if colunas_ausentes:
     raise ValueError(
-        f"Estas colunas não existem na base: {colunas_ausentes}"
+        f"Estas colunas nÃ£o existem na base: {colunas_ausentes}"
     )
 
-print("Dimensão da base Silver:", df.shape)
-print("Colunas necessárias conferidas.")
+print("DimensÃ£o da base Silver:", df.shape)
+print("Colunas necessÃ¡rias conferidas.")
 
 
 # ============================================================
-# 3. CRIAÇÃO DO ALVO FUTURO
+# 3. CRIAÃ‡ÃƒO DO ALVO FUTURO
 # ============================================================
 
 print("\n2. Preparando a TADA do ano seguinte...")
 
-# Confere se cada chave identifica uma única linha por ano.
+# Confere se cada chave identifica uma Ãºnica linha por ano.
 if df.duplicated(chaves + [ano]).any():
     raise ValueError(
-        "Há duplicatas em instituição, curso, coorte e ano. "
-        "A associação temporal precisa ser investigada."
+        "HÃ¡ duplicatas em instituiÃ§Ã£o, curso, coorte e ano. "
+        "A associaÃ§Ã£o temporal precisa ser investigada."
     )
 
-# Mantém uma única ocorrência de cada coluna.
+# MantÃ©m uma Ãºnica ocorrÃªncia de cada coluna.
 atual = df[colunas_necessarias].copy()
 
 atual[ano] = pd.to_numeric(
@@ -123,7 +123,7 @@ atual[alvo_original] = pd.to_numeric(
     atual[alvo_original], errors="coerce"
 )
 
-# Constrói uma tabela com a TADA observada no ano seguinte.
+# ConstrÃ³i uma tabela com a TADA observada no ano seguinte.
 futura = df[chaves + [ano, alvo_original]].copy()
 
 futura[ano] = pd.to_numeric(
@@ -134,14 +134,14 @@ futura[alvo_original] = pd.to_numeric(
     futura[alvo_original], errors="coerce"
 )
 
-# Exemplo: a observação de 2021 será associada ao ano atual 2020.
+# Exemplo: a observaÃ§Ã£o de 2021 serÃ¡ associada ao ano atual 2020.
 futura["ANO_PREDICAO"] = futura[ano] - 1
 
 futura = futura.rename(
     columns={alvo_original: alvo}
 )
 
-# Junta pelo curso, instituição, coorte e ano de previsão.
+# Junta pelo curso, instituiÃ§Ã£o, coorte e ano de previsÃ£o.
 base = atual.merge(
     futura[chaves + ["ANO_PREDICAO", alvo]],
     left_on=chaves + [ano],
@@ -150,24 +150,24 @@ base = atual.merge(
     validate="one_to_one",
 )
 
-# Só podemos treinar quando existe TADA observada no ano seguinte.
+# SÃ³ podemos treinar quando existe TADA observada no ano seguinte.
 base = base.dropna(
     subset=[ano, alvo]
 ).copy()
 
-# A TADA é uma taxa percentual entre 0 e 100.
+# A TADA Ã© uma taxa percentual entre 0 e 100.
 base = base[base[alvo].between(0, 100)].copy()
 
-# Não usamos 2024 como ano de previsão porque não há TADA de 2025.
+# NÃ£o usamos 2024 como ano de previsÃ£o porque nÃ£o hÃ¡ TADA de 2025.
 base = base[base[ano] <= 2023].copy()
 
 if base.empty:
     raise ValueError(
-        "Não há registros com TADA futura disponível."
+        "NÃ£o hÃ¡ registros com TADA futura disponÃ­vel."
     )
 
-print("Registros disponíveis para modelagem:", len(base))
-print("\nQuantidade de registros por ano de referência:")
+print("Registros disponÃ­veis para modelagem:", len(base))
+print("\nQuantidade de registros por ano de referÃªncia:")
 
 print(
     base.groupby(ano)[alvo]
@@ -196,17 +196,17 @@ base_gold.to_parquet(
 )
 
 print("Base Gold salva em:", caminho_gold)
-print("Dimensão da base Gold:", base_gold.shape)
+print("DimensÃ£o da base Gold:", base_gold.shape)
 
 
 # ============================================================
-# 5. SEPARAÇÃO TEMPORAL ENTRE TREINO E TESTE
+# 5. SEPARAÃ‡ÃƒO TEMPORAL ENTRE TREINO E TESTE
 # ============================================================
 
 print("\n4. Separando treino e teste...")
 
 # Treino: dados de 2020, 2021 e 2022.
-# Teste: características de 2023 para prever a TADA de 2024.
+# Teste: caracterÃ­sticas de 2023 para prever a TADA de 2024.
 treino = base_gold[
     base_gold[ano] < 2023
 ].copy()
@@ -217,7 +217,7 @@ teste = base_gold[
 
 if treino.empty or teste.empty:
     raise ValueError(
-        "Treino ou teste vazio. Confira os anos disponíveis."
+        "Treino ou teste vazio. Confira os anos disponÃ­veis."
     )
 
 X_treino = treino[categoricas + numericas]
@@ -228,7 +228,7 @@ y_teste = teste[alvo]
 
 print("Registros de treino:", len(treino))
 print("Registros de teste:", len(teste))
-print("Ano das características de teste: 2023")
+print("Ano das caracterÃ­sticas de teste: 2023")
 print("Ano da TADA prevista no teste: 2024")
 
 
@@ -267,7 +267,7 @@ preprocessamento = ColumnTransformer(
 
 
 # ============================================================
-# 7. MODELOS DE COMPARAÇÃO
+# 7. MODELOS DE COMPARAÃ‡ÃƒO
 # ============================================================
 
 modelos = {
@@ -284,7 +284,7 @@ modelos = {
 
 
 # ============================================================
-# 8. TREINAMENTO E AVALIAÇÃO
+# 8. TREINAMENTO E AVALIAÃ‡ÃƒO
 # ============================================================
 
 print("\n5. Treinando e avaliando os modelos...")
@@ -327,38 +327,38 @@ for nome, estimador in modelos.items():
     print("\nModelo:", nome)
     print("MAE:", round(resultado["MAE"], 4))
     print("RMSE:", round(resultado["RMSE"], 4))
-    print("R²:", round(resultado["R2"], 4))
+    print("RÂ²:", round(resultado["R2"], 4))
 
 
 # ============================================================
-# 9. SALVAMENTO DO RELATÓRIO
+# 9. SALVAMENTO DO RELATÃ“RIO
 # ============================================================
 
 relatorio = {
     "objetivo": (
-        "Prever a TADA do ano seguinte usando características "
-        "disponíveis no ano de referência."
+        "Prever a TADA do ano seguinte usando caracterÃ­sticas "
+        "disponÃ­veis no ano de referÃªncia."
     ),
     "variavel_alvo": alvo,
     "definicao_temporal": (
-        "TADA_FUTURA corresponde à TADA do mesmo curso, "
-        "instituição e coorte no ano de referência seguinte."
+        "TADA_FUTURA corresponde Ã  TADA do mesmo curso, "
+        "instituiÃ§Ã£o e coorte no ano de referÃªncia seguinte."
     ),
     "chaves_associacao": chaves,
-    "treino": "Anos de referência de 2020 a 2022",
+    "treino": "Anos de referÃªncia de 2020 a 2022",
     "teste": (
-        "Características de 2023 para prever TADA observada em 2024"
+        "CaracterÃ­sticas de 2023 para prever TADA observada em 2024"
     ),
     "preditoras": categoricas + numericas,
     "observacoes": [
-        "NU_ANO_REFERENCIA é usado para separar os períodos, "
-        "não como preditor.",
-        "O pré-processamento é ajustado apenas nos dados de treino.",
+        "NU_ANO_REFERENCIA Ã© usado para separar os perÃ­odos, "
+        "nÃ£o como preditor.",
+        "O prÃ©-processamento Ã© ajustado apenas nos dados de treino.",
         "Cursos e coortes podem aparecer em treino e teste.",
-        "Os resultados medem a previsão temporal para registros "
+        "Os resultados medem a previsÃ£o temporal para registros "
         "das unidades representadas na base.",
-        "A definição oficial e a interpretação da TADA devem "
-        "ser confirmadas na documentação da fonte."
+        "A definiÃ§Ã£o oficial e a interpretaÃ§Ã£o da TADA devem "
+        "ser confirmadas na documentaÃ§Ã£o da fonte."
     ],
     "resultados": resultados,
 }
@@ -376,5 +376,7 @@ caminho_relatorio.write_text(
     encoding="utf-8",
 )
 
-print("\n6. Relatório salvo em:", caminho_relatorio)
-print("Experimento concluído.")
+print("\n6. RelatÃ³rio salvo em:", caminho_relatorio)
+print("Experimento concluÃ­do.")
+
+

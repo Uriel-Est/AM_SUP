@@ -1,0 +1,228 @@
+﻿===== AUDITORIA DO PROJETO AM_SUP =====
+Data: 11/19/2026 11:09:12
+Raiz: C:\Users\vivia\AM_SUP
+
+===== 1. ESTRUTURA DE PASTAS =====
+
+Name                        FullName                                         
+----                        --------                                         
+.git                        C:\Users\vivia\AM_SUP\.git                       
+backup_antes_da_organizacao C:\Users\vivia\AM_SUP\backup_antes_da_organizacao
+code                        C:\Users\vivia\AM_SUP\code                       
+data                        C:\Users\vivia\AM_SUP\data                       
+docs                        C:\Users\vivia\AM_SUP\docs                       
+notebooks                   C:\Users\vivia\AM_SUP\notebooks                  
+relatorios                  C:\Users\vivia\AM_SUP\relatorios                 
+reports                     C:\Users\vivia\AM_SUP\reports                    
+
+
+
+
+===== 2. CAMADAS DE DADOS =====
+
+FullName                                                 
+--------                                                 
+C:\Users\vivia\AM_SUP\data\bronze                        
+C:\Users\vivia\AM_SUP\data\gold                          
+C:\Users\vivia\AM_SUP\data\silver                        
+C:\Users\vivia\AM_SUP\data\bronze\fluxo_educacao_superior
+C:\Users\vivia\AM_SUP\data\gold\fluxo_educacao_superior  
+C:\Users\vivia\AM_SUP\data\silver\fluxo_educacao_superior
+
+
+
+
+===== 3. ARQUIVOS POR PASTA (BRONZE / SILVER / GOLD / OUTRAS) =====
+
+Camada Arquivo                                                                                        Extensao    MB
+------ -------                                                                                        --------    --
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2010_2019.xlsx    .xlsx    37,21
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2011_2020.xlsx    .xlsx    37,37
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2012_2021.xlsx    .xlsx    38,82
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2013_2022.xlsx    .xlsx     38,8
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2014_2023.xlsx    .xlsx    39,89
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2015_2024.xlsx    .xlsx    40,82
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2016_2024.xlsx    .xlsx    38,74
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2017_2024.xlsx    .xlsx    36,88
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2018_2024.xlsx    .xlsx    34,56
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2019_2024.xlsx    .xlsx    31,35
+bronze data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2020_2024.xlsx    .xlsx    26,46
+gold   data\gold\fluxo_educacao_superior\base_modelagem_tada_futura.parquet                           .parquet  0,46
+gold   data\gold\fluxo_educacao_superior\base_modelagem_tda.parquet                                   .parquet  0,63
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2010_2019.parquet .parquet  3,53
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2011_2020.parquet .parquet  3,56
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2012_2021.parquet .parquet  3,79
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2013_2022.parquet .parquet  3,78
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2014_2023.parquet .parquet  3,97
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2015_2024.parquet .parquet  3,96
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2016_2024.parquet .parquet  3,84
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2017_2024.parquet .parquet  3,75
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2018_2024.parquet .parquet  4,24
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2019_2024.parquet .parquet  3,91
+silver data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2020_2024.parquet .parquet  3,51
+
+
+
+
+===== 4. TODOS OS ARQUIVOS DO PROJETO =====
+
+Arquivo                                                                                           MB Modificado         
+-------                                                                                           -- ----------         
+.gitignore                                                                                         0 29/10/2026 09:43:47
+backup_antes_da_organizacao\auditoria_baseline_tda.ipynb                                        0,04 27/10/2026 18:15:27
+backup_antes_da_organizacao\contrato_dados_e_vazamento.md                                          0 27/10/2026 17:52:58
+backup_antes_da_organizacao\preparar_entrega4_historico_tda.py                                  0,02 27/10/2026 17:52:58
+backup_antes_da_organizacao\README.md                                                              0 29/10/2026 09:32:19
+backup_antes_da_organizacao\relatorio_qualidade.md                                                 0 29/10/2026 00:11:54
+backup_antes_da_organizacao\requirements.txt                                                       0 27/10/2026 17:52:58
+code\analisar_comparacao_final_tada.py                                                             0 29/10/2026 09:27:36
+code\analisar_erros_tada.py                                                                        0 29/10/2026 09:01:14
+code\auditar_base_completa.py                                                                      0 29/10/2026 00:28:33
+code\auditar_pares_tada.py                                                                         0 29/10/2026 00:29:40
+code\auditar_particao.py                                                                           0 29/10/2026 08:12:32
+code\bronze_fluxo_ensino_superior.py                                                            0,01 27/10/2026 15:23:40
+code\modelo_baseline_tada_completo.py                                                              0 29/10/2026 08:18:48
+code\modelo_baseline_tada_futura.py                                                             0,01 29/10/2026 00:19:27
+code\modelo_baseline_tda.py                                                                     0,02 29/10/2026 09:49:38
+code\modelo_tada_duas_etapas.py                                                                 0,01 19/11/2026 10:46:39
+code\modelo_tada_persistencia.py                                                                0,01 19/11/2026 10:22:16
+code\rf_tada_experimento.py                                                                     0,01 19/11/2026 10:38:13
+code\silver_fluxo_ensino_superior.py                                                               0 27/10/2026 16:58:25
+code\xgb_tada_experimento.py                                                                    0,01 19/11/2026 11:03:48
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2010_2019.xlsx    37,21 27/10/2026 15:39:17
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2011_2020.xlsx    37,37 27/10/2026 15:38:51
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2012_2021.xlsx    38,82 27/10/2026 15:38:25
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2013_2022.xlsx     38,8 27/10/2026 15:37:58
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2014_2023.xlsx    39,89 27/10/2026 15:37:23
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2015_2024.xlsx    40,82 27/10/2026 15:42:54
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2016_2024.xlsx    38,74 27/10/2026 15:42:17
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2017_2024.xlsx    36,88 27/10/2026 15:41:40
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2018_2024.xlsx    34,56 27/10/2026 15:41:06
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2019_2024.xlsx    31,35 27/10/2026 15:40:35
+data\bronze\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2020_2024.xlsx    26,46 27/10/2026 15:40:06
+data\gold\fluxo_educacao_superior\base_modelagem_tada_futura.parquet                            0,46 29/10/2026 00:19:47
+data\gold\fluxo_educacao_superior\base_modelagem_tda.parquet                                    0,63 27/10/2026 17:40:10
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2010_2019.parquet  3,53 27/10/2026 16:36:41
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2011_2020.parquet  3,56 27/10/2026 17:00:23
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2012_2021.parquet  3,79 27/10/2026 17:02:16
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2013_2022.parquet  3,78 27/10/2026 17:04:05
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2014_2023.parquet  3,97 27/10/2026 17:05:55
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2015_2024.parquet  3,96 27/10/2026 17:07:02
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2016_2024.parquet  3,84 27/10/2026 17:08:02
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2017_2024.parquet  3,75 27/10/2026 17:08:59
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2018_2024.parquet  4,24 27/10/2026 17:09:53
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2019_2024.parquet  3,91 27/10/2026 17:10:43
+data\silver\fluxo_educacao_superior\indicadores_trajetoria_educacao_superior_2020_2024.parquet  3,51 27/10/2026 17:11:23
+docs\contrato_dados_e_vazamento.md                                                              0,01 29/10/2026 10:21:02
+notebooks\auditoria_baseline_tda.ipynb                                                          0,04 27/10/2026 18:15:27
+notebooks\auditoria_baseline_tda_executado.ipynb                                                0,03 28/10/2026 23:58:32
+README.md                                                                                          0 29/10/2026 09:39:27
+relatorios\analise_final_tada.json                                                                 0 29/10/2026 09:27:49
+relatorios\auditoria_notebook.json                                                                 0 28/10/2026 23:58:30
+relatorios\baseline_tada_completo.json                                                             0 29/10/2026 08:32:51
+relatorios\baseline_tada_futura.json                                                               0 29/10/2026 00:20:53
+relatorios\baseline_tda.json                                                                       0 27/10/2026 17:41:21
+relatorios\comparacao_erros_por_faixa_tada.csv                                                     0 29/10/2026 09:27:49
+relatorios\comparacao_tada_persistencia.json                                                       0 29/10/2026 09:25:52
+relatorios\erros_persistencia_por_faixa.csv                                                        0 29/10/2026 09:01:26
+relatorios\execucao_silver.log                                                                     0 27/10/2026 16:49:25
+relatorios\previsoes_tada_teste.csv                                                            18,73 29/10/2026 09:25:54
+relatorios\relatorio_qualidade.md                                                                  0 29/10/2026 09:38:06
+reports\auditoria_estrutura_projeto.txt                                                            0 19/11/2026 11:09:12
+reports\comparacao_tada_persistencia.json                                                       0,01 19/11/2026 10:22:46
+reports\previsoes_tada_teste.csv                                                               11,41 19/11/2026 10:22:47
+reports\rf_tada_experimento.json                                                                   0 19/11/2026 10:39:04
+reports\rf_tada_previsoes_teste.csv                                                            17,04 19/11/2026 10:39:05
+reports\tada_duas_etapas.json                                                                      0 19/11/2026 10:47:19
+reports\tada_duas_etapas_previsoes.csv                                                         12,51 19/11/2026 10:47:20
+reports\xgb_tada_experimento.json                                                               0,01 19/11/2026 11:04:48
+reports\xgb_tada_previsoes_teste.csv                                                           10,56 19/11/2026 11:04:49
+requirements.txt                                                                                   0 27/10/2026 17:52:58
+
+
+
+
+===== 5. RESUMO POR EXTENSAO =====
+
+Name       Count
+----       -----
+.py           15
+.parquet      13
+.xlsx         11
+.json         10
+.csv           7
+.md            6
+.txt           3
+.ipynb         3
+.log           1
+.gitignore     1
+
+
+
+
+===== 6. TAMANHO DAS PASTAS PRINCIPAIS =====
+
+Pasta                          GB
+-----                          --
+data                        0,433
+reports                      0,05
+relatorios                  0,018
+backup_antes_da_organizacao     0
+notebooks                       0
+code                            0
+docs                            0
+
+
+
+
+===== 7. GIT STATUS =====
+ M code/modelo_tada_persistencia.py
+?? code/modelo_tada_duas_etapas.py
+?? code/rf_tada_experimento.py
+?? code/xgb_tada_experimento.py
+?? reports/
+
+===== 8. GIT IGNORE ATUAL =====
+# Dados originais e processados do INEP
+data/bronze/
+data/silver/
+data/gold/
+
+# Dados da estrutura antiga
+dados/bruto/
+dados/processado/
+
+# Arquivos temporÃ¡rios do Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Arquivos temporÃ¡rios
+*.tmp
+
+# ConfiguraÃ§Ãµes locais do VS Code
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Previsões individuais de teste, geradas pelo modelo
+relatorios/previsoes_tada_teste.csv
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/
+
+# Cópias locais de segurança
+backup_antes_da_organizacao/
+
+===== 9. ARQUIVOS GRANDES (ACIMA DE 100 MB) =====
+
+
+===== FIM DO RELATORIO =====

@@ -1,0 +1,207 @@
+{
+  "objetivo": "Prever TADA no ano seguinte usando apenas características do ano de origem.",
+  "definicao_temporal": "origem t; alvo t+1; teste 2023 -> 2024",
+  "n_pares_total": 2407858,
+  "n_treino_final": 2217370,
+  "n_treino_final_utilizado_modelo": 100000,
+  "n_teste": 190488,
+  "anos_validacao": [
+    2021,
+    2022
+  ],
+  "metricas_persistencia_validacao": {
+    "2021": {
+      "MAE": 5.869458654068583,
+      "RMSE": 12.27287693321511,
+      "R2": -0.9926764636883008
+    },
+    "2022": {
+      "MAE": 5.188781185820064,
+      "RMSE": 10.847284498686335,
+      "R2": -1.0865155238436106
+    }
+  },
+  "configuracoes": [
+    {
+      "n_estimators": 400,
+      "max_depth": 4,
+      "learning_rate": 0.05,
+      "min_child_weight": 10,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "reg_lambda": 5.0
+    },
+    {
+      "n_estimators": 600,
+      "max_depth": 6,
+      "learning_rate": 0.03,
+      "min_child_weight": 20,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "reg_lambda": 10.0
+    },
+    {
+      "n_estimators": 400,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "min_child_weight": 5,
+      "subsample": 0.9,
+      "colsample_bytree": 0.9,
+      "reg_lambda": 2.0
+    }
+  ],
+  "resultados_validacao": [
+    {
+      "config_id": 1,
+      "config": {
+        "n_estimators": 400,
+        "max_depth": 4,
+        "learning_rate": 0.05,
+        "min_child_weight": 10,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 5.0
+      },
+      "ano_validacao": 2021,
+      "MAE": 4.752934516270713,
+      "RMSE": 8.07115817826692,
+      "R2": 0.13818162427305147
+    },
+    {
+      "config_id": 2,
+      "config": {
+        "n_estimators": 600,
+        "max_depth": 6,
+        "learning_rate": 0.03,
+        "min_child_weight": 20,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 10.0
+      },
+      "ano_validacao": 2021,
+      "MAE": 4.753662041644118,
+      "RMSE": 8.162521640249132,
+      "R2": 0.11856006321188561
+    },
+    {
+      "config_id": 3,
+      "config": {
+        "n_estimators": 400,
+        "max_depth": 3,
+        "learning_rate": 0.05,
+        "min_child_weight": 5,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9,
+        "reg_lambda": 2.0
+      },
+      "ano_validacao": 2021,
+      "MAE": 4.782702669515371,
+      "RMSE": 8.033072415487267,
+      "R2": 0.14629584226614423
+    },
+    {
+      "config_id": 1,
+      "config": {
+        "n_estimators": 400,
+        "max_depth": 4,
+        "learning_rate": 0.05,
+        "min_child_weight": 10,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 5.0
+      },
+      "ano_validacao": 2022,
+      "MAE": 4.589366525093743,
+      "RMSE": 7.5229647306297664,
+      "R2": -0.0035929690882055
+    },
+    {
+      "config_id": 2,
+      "config": {
+        "n_estimators": 600,
+        "max_depth": 6,
+        "learning_rate": 0.03,
+        "min_child_weight": 20,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 10.0
+      },
+      "ano_validacao": 2022,
+      "MAE": 4.598339262390937,
+      "RMSE": 7.559250838451084,
+      "R2": -0.01329773555609215
+    },
+    {
+      "config_id": 3,
+      "config": {
+        "n_estimators": 400,
+        "max_depth": 3,
+        "learning_rate": 0.05,
+        "min_child_weight": 5,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9,
+        "reg_lambda": 2.0
+      },
+      "ano_validacao": 2022,
+      "MAE": 4.623068463983083,
+      "RMSE": 7.508136688136724,
+      "R2": 0.00035936989188045665
+    }
+  ],
+  "ranking_configuracoes": [
+    {
+      "config_id": 1,
+      "MAE_validacao_medio": 4.671150520682228,
+      "RMSE_validacao_medio": 7.797061454448343,
+      "R2_validacao_medio": 0.06729432759242299
+    },
+    {
+      "config_id": 2,
+      "MAE_validacao_medio": 4.676000652017527,
+      "RMSE_validacao_medio": 7.860886239350108,
+      "R2_validacao_medio": 0.05263116382789673
+    },
+    {
+      "config_id": 3,
+      "MAE_validacao_medio": 4.702885566749227,
+      "RMSE_validacao_medio": 7.770604551811996,
+      "R2_validacao_medio": 0.07332760607901234
+    }
+  ],
+  "melhor_configuracao": {
+    "config_id": 1,
+    "n_estimators": 400,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "min_child_weight": 10,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 5.0
+  },
+  "metricas_teste_2023_2024": {
+    "persistencia": {
+      "MAE": 4.033113086044092,
+      "RMSE": 9.179219683792182,
+      "R2": -1.6647726292831249
+    },
+    "xgboost_config_1": {
+      "MAE": 3.7302971597203545,
+      "RMSE": 5.923887871874467,
+      "R2": -0.1098448991165093
+    }
+  },
+  "features": [
+    "TP_CATEGORIA_ADMINISTRATIVA",
+    "TP_ORGANIZACAO_ACADEMICA",
+    "TP_GRAU_ACADEMICO",
+    "TP_MODALIDADE_ENSINO",
+    "CO_REGIAO",
+    "CO_UF",
+    "CO_CINE_AREA_GERAL",
+    "NU_ANO_INGRESSO",
+    "TADA",
+    "QT_INGRESSANTE",
+    "ANO_ORIGEM"
+  ],
+  "nota": "Teste final reservado: origem 2023 para alvo 2024; seleção baseada apenas nas validações 2021 e 2022."
+}

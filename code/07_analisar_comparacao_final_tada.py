@@ -1,14 +1,14 @@
-
+﻿
 from pathlib import Path
 import json
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-PASTA = Path("relatorios")
+PASTA = Path("reports/local_predictions")
 ARQUIVO = PASTA / "previsoes_tada_teste.csv"
 
 if not ARQUIVO.exists():
-    raise FileNotFoundError(f"Arquivo não encontrado: {ARQUIVO}")
+    raise FileNotFoundError(f"Arquivo nÃ£o encontrado: {ARQUIVO}")
 
 df = pd.read_csv(ARQUIVO)
 
@@ -113,7 +113,7 @@ relatorio = {
     encoding="utf-8",
 )
 
-print("\nMÉTRICAS GERAIS")
+print("\nMÃ‰TRICAS GERAIS")
 print(pd.DataFrame(metricas_gerais).T.round(4).to_string())
 
 print("\nERROS POR FAIXA DE TADA FUTURA")
@@ -122,3 +122,5 @@ print(tabela.round(4).to_string(index=False))
 print("\nArquivos gerados:")
 print(PASTA / "comparacao_erros_por_faixa_tada.csv")
 print(PASTA / "analise_final_tada.json")
+
+

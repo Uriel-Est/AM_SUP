@@ -1,0 +1,143 @@
+{
+  "persistencia": {
+    "MAE": 4.033113086044092,
+    "RMSE": 9.179219683792184,
+    "R2": -1.6647726292831253
+  },
+  "hurdle_expected_C0.1_alpha1.0": {
+    "MAE": 5.229442510589054,
+    "RMSE": 6.606341593629388,
+    "R2": -0.3802910857028794
+  },
+  "selected_mode_by_validation": "expected",
+  "validation": [
+    {
+      "year": 2021,
+      "C": 0.1,
+      "alpha": 0.01,
+      "mae_expected": 6.420674613016776,
+      "mae_threshold": 7.376089279510139
+    },
+    {
+      "year": 2021,
+      "C": 0.1,
+      "alpha": 0.1,
+      "mae_expected": 6.0943730240526275,
+      "mae_threshold": 6.806551697860717
+    },
+    {
+      "year": 2021,
+      "C": 0.1,
+      "alpha": 1.0,
+      "mae_expected": 6.054600586310173,
+      "mae_threshold": 6.562025972554295
+    },
+    {
+      "year": 2021,
+      "C": 1.0,
+      "alpha": 0.01,
+      "mae_expected": 6.429271749145899,
+      "mae_threshold": 7.375182292005667
+    },
+    {
+      "year": 2021,
+      "C": 1.0,
+      "alpha": 0.1,
+      "mae_expected": 6.100052863048927,
+      "mae_threshold": 6.805597151461922
+    },
+    {
+      "year": 2021,
+      "C": 1.0,
+      "alpha": 1.0,
+      "mae_expected": 6.056819648880923,
+      "mae_threshold": 6.559475258278588
+    },
+    {
+      "year": 2021,
+      "C": 10.0,
+      "alpha": 0.01,
+      "mae_expected": 6.430440826670934,
+      "mae_threshold": 7.376711603596738
+    },
+    {
+      "year": 2021,
+      "C": 10.0,
+      "alpha": 0.1,
+      "mae_expected": 6.10090536721321,
+      "mae_threshold": 6.80711850842666
+    },
+    {
+      "year": 2021,
+      "C": 10.0,
+      "alpha": 1.0,
+      "mae_expected": 6.057395511331158,
+      "mae_threshold": 6.561177252595919
+    },
+    {
+      "year": 2022,
+      "C": 0.1,
+      "alpha": 0.01,
+      "mae_expected": 6.220885229762969,
+      "mae_threshold": 7.148323200214249
+    },
+    {
+      "year": 2022,
+      "C": 0.1,
+      "alpha": 0.1,
+      "mae_expected": 5.8827381015640166,
+      "mae_threshold": 6.657435938865108
+    },
+    {
+      "year": 2022,
+      "C": 0.1,
+      "alpha": 1.0,
+      "mae_expected": 5.681213378301389,
+      "mae_threshold": 6.294073951696699
+    },
+    {
+      "year": 2022,
+      "C": 1.0,
+      "alpha": 0.01,
+      "mae_expected": 6.230670672055643,
+      "mae_threshold": 7.15120126754492
+    },
+    {
+      "year": 2022,
+      "C": 1.0,
+      "alpha": 0.1,
+      "mae_expected": 5.891327189082743,
+      "mae_threshold": 6.660252409121195
+    },
+    {
+      "year": 2022,
+      "C": 1.0,
+      "alpha": 1.0,
+      "mae_expected": 5.687440732520683,
+      "mae_threshold": 6.29564161996401
+    },
+    {
+      "year": 2022,
+      "C": 10.0,
+      "alpha": 0.01,
+      "mae_expected": 6.232545372035147,
+      "mae_threshold": 7.1522992425018
+    },
+    {
+      "year": 2022,
+      "C": 10.0,
+      "alpha": 0.1,
+      "mae_expected": 5.892746267646984,
+      "mae_threshold": 6.660823784867826
+    },
+    {
+      "year": 2022,
+      "C": 10.0,
+      "alpha": 1.0,
+      "mae_expected": 5.688218257315729,
+      "mae_threshold": 6.2956421886384115
+    }
+  ],
+  "n_train": 2217370,
+  "n_test": 190488
+}

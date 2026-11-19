@@ -1,38 +1,28 @@
-# Dados originais e processados do INEP
+ï»¿# INEP datasets
 data/bronze/
 data/silver/
 data/gold/
 
-# Dados da estrutura antiga
+# Legacy data
 dados/bruto/
 dados/processado/
 
-# Arquivos temporÃ¡rios do Python
+# Python
 __pycache__/
 *.py[cod]
-
-# Ambientes virtuais
 .venv/
 venv/
 
-# Arquivos temporÃ¡rios
+# Temporary files
 *.tmp
 
-# ConfiguraÃ§Ãµes locais do VS Code
+# IDE and system files
 .vscode/
-
-# Arquivos de sistema
 .DS_Store
 Thumbs.db
 
-# Previsões individuais de teste, geradas pelo modelo
-relatorios/previsoes_tada_teste.csv
-
-# Cópias locais de segurança
+# Local backups
 backup_antes_da_organizacao/
 
-# Cópias locais de segurança
-backup_antes_da_organizacao/
-
-# Cópias locais de segurança
-backup_antes_da_organizacao/
+# Local model predictions
+reports/local_predictions/
