@@ -1,90 +1,174 @@
-﻿# AM_SUP | Aprendizagem de Máquina Supervisionada
+# Predição da Taxa de Desistência Anual (TADA) no Ensino Superior
 
-Repositório do projeto aplicado da disciplina Aprendizagem de Máquina Supervisionada, UFPB/CCSA, período 2026.2.
+## Sobre o projeto
+
+Projeto acadêmico de aprendizado de máquina supervisionado para investigar a capacidade de prever a Taxa de Desistência Anual (TADA) dos cursos de graduação a partir de dados de trajetória da educação superior disponibilizados pelo INEP.
+
+O objetivo é avaliar se informações de um determinado ano permitem estimar a TADA do ano seguinte, utilizando características institucionais, acadêmicas, territoriais e temporais.
 
 ## Objetivo
 
-Investigar a previsão da Taxa de Desistência Anual (TADA) futura a partir de indicadores públicos da trajetória da educação superior. O projeto tem caráter exploratório e não constitui um sistema validado para decisões operacionais.
+Desenvolver e comparar modelos de regressão para previsão da TADA em uma estrutura temporal, utilizando dados do ano de origem para prever o indicador do ano subsequente.
 
-## Dados e preparação
+O projeto busca avaliar o desempenho dos modelos, compará-los com uma referência simples e investigar as limitações da previsão de indicadores de trajetória educacional.
 
-A base Silver contém arquivos Parquet organizados por coorte de ingresso e ano de referência. A auditoria considera a chave candidata `CO_IES`, `CO_CURSO`, `NU_ANO_INGRESSO` e `NU_ANO_REFERENCIA`.
+## Fonte dos dados
 
-A construção dos pares temporais resultou em 2.407.858 observações para prever a TADA do ano seguinte.
+- Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP).
+- Indicadores de trajetória da educação superior.
+- Dados anuais organizados para construção de observações temporais.
 
-- Treinamento: anos de origem até 2022, com 2.217.370 registros.
-- Teste: ano de origem 2023, para prever o alvo de 2024, com 190.488 registros.
-- Variável-alvo: `TADA_FUTURA`.
-- Modelos comparados: persistência e Random Forest.
+Os arquivos originais não estão incluídos neste repositório.
 
-A fonte oficial exata, a data de obtenção e as condições de uso dos dados ainda precisam ser registradas após conferência documental.
+## Estrutura temporal
+
+A base foi organizada em pares de anos, considerando:
+
+- Ano de origem (t): variáveis utilizadas como preditoras.
+- Ano alvo (t+1): TADA que se pretende prever.
+
+A avaliação foi realizada respeitando a temporalidade dos dados.
+
+| Etapa | Ano de origem | Ano alvo |
+|---|---:|---:|
+| Validação | 2021 | 2022 |
+| Validação | 2022 | 2023 |
+| Teste final | 2023 | 2024 |
+
+O período de teste final foi reservado para avaliação da capacidade de generalização temporal.
+
+## Base analítica
+
+- Pares temporais: 2.407.858
+- Treinamento (anos de origem até 2022): 2.217.370
+- Teste final (2023 → 2024): 190.488
+
+Identificação dos cursos:
+
+- `CO_IES`
+- `CO_CURSO`
+- `NU_ANO_INGRESSO`
+
+## Variáveis utilizadas
+
+Foram utilizadas informações relacionadas à caracterização institucional, acadêmica, territorial e temporal, incluindo:
+
+- Categoria administrativa
+- Organização acadêmica
+- Grau acadêmico
+- Modalidade de ensino
+- Região
+- Unidade da Federação
+- Área geral do curso (CINE)
+- Ano de ingresso
+- TADA no ano de origem
+- Quantidade de ingressantes
+- Ano de origem
+
+A variável-alvo corresponde à TADA do ano seguinte.
+
+## Modelos avaliados
+
+- Lasso
+- Persistência (baseline)
+- XGBoost
+- Hurdle (modelo de duas etapas)
+- Random Forest
+
+A persistência utiliza o valor do ano anterior como previsão, funcionando como referência para avaliar se os modelos conseguem superar uma abordagem simples.
+
+## Resultados
+
+Resultados no conjunto de teste final (origem 2023 → alvo 2024):
+
+| Modelo | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Lasso | 3,0614 | 5,5861 | 0,0131 |
+| Persistência | 4,0331 | 9,1792 | -1,6648 |
+| XGBoost | 3,7303 | 5,9239 | -0,1098 |
+| Hurdle (duas etapas) | 5,2294 | 6,6063 | -0,3803 |
+| Random Forest | 6,3036 | 7,5196 | -0,7883 |
+
+### Interpretação
+
+O Lasso apresentou o melhor desempenho entre os modelos testados, com menores valores de MAE e RMSE e maior R². Também superou o baseline de persistência nas métricas avaliadas.
+
+Entretanto, o R² próximo de zero indica capacidade limitada de explicar a variabilidade da TADA no conjunto de teste. Os resultados sugerem que a previsão de um ano para o outro apresenta desafios e que modelos mais complexos não necessariamente oferecem melhor desempenho.
+
+Os resultados são exploratórios e não representam validação de uma ferramenta pronta para uso operacional.
+
+## Métricas
+
+- **MAE:** erro absoluto médio das previsões.
+- **RMSE:** raiz do erro quadrático médio, penalizando erros maiores.
+- **R²:** coeficiente de determinação, relacionado à capacidade explicativa do modelo em comparação com uma referência baseada na média.
+
+## Pipeline de dados
+
+O projeto está organizado em camadas:
+
+- **Bronze:** dados de origem.
+- **Silver:** dados processados, padronizados e armazenados em Parquet.
+- **Gold:** bases estruturadas para análises e modelagem.
+
+O pipeline inclui preparação, auditorias de consistência, construção de pares temporais, treinamento, avaliação e análise de erros.
 
 ## Estrutura do repositório
 
-- `code/`: scripts de preparação, auditoria, modelagem e análise.
-- `data/bronze/`: dados originais, quando disponíveis.
-- `data/silver/`: dados tratados em Parquet.
-- `data/gold/`: dados preparados para modelagem, quando aplicável.
-- `notebooks/`: notebooks de exploração e análise, incluindo experimentos históricos.
-- `docs/`: documentação metodológica e contratos de dados.
-- `relatorios/`: métricas, auditorias e análises finais.
-
-Os diretórios locais de dados são ignorados pelo Git devido ao tamanho. A execução depende da presença dos arquivos de dados necessários.
-
-## Como executar
-
-No PowerShell, abra o terminal na raiz do repositório e instale as dependências:
-
-```powershell
-python -m pip install -r requirements.txt
+```text
+AM_SUP/
+├── code/
+│   ├── 01_bronze_fluxo_ensino_superior.py
+│   ├── 02_silver_fluxo_ensino_superior.py
+│   ├── 03_auditar_base_completa.py
+│   ├── 04_auditar_pares_tada.py
+│   ├── 05_auditar_particao.py
+│   ├── 06_analisar_erros_tada.py
+│   ├── 07_analisar_comparacao_final_tada.py
+│   ├── 10_modelo_baseline_tda.py
+│   ├── 11_modelo_baseline_tada_completo.py
+│   ├── 12_modelo_baseline_tada_futura.py
+│   ├── 13_modelo_tada_persistencia.py
+│   ├── 20_experimento_tada_duas_etapas.py
+│   ├── 21_experimento_tada_random_forest.py
+│   └── 22_experimento_tada_xgboost.py
+├── data/
+│   ├── bronze/
+│   ├── silver/
+│   └── gold/
+├── reports/
+│   ├── audit/
+│   ├── metrics/
+│   │   └── historico/
+│   ├── local_predictions/
+│   └── summaries/
+├── .gitignore
+└── README.md
 ```
 
-Para reproduzir a comparação final, com os dados Silver e os arquivos necessários já disponíveis, execute:
+## Tecnologias
 
-```powershell
-python code/modelo_tada_persistencia.py
-python code/analisar_comparacao_final_tada.py
-```
-
-A construção da base depende das etapas anteriores de preparação dos dados. O script Bronze pode baixar arquivos grandes; execute-o apenas se precisar obter novamente os dados originais. Os scripts usam caminhos relativos à raiz do repositório.
-
-## Resultados da avaliação
-
-| Métrica | Persistência | Random Forest |
-|---|---:|---:|
-| MAE | 4,0331 | 6,4396 |
-| RMSE | 9,1792 | 8,1779 |
-| R² | -1,6648 | -1,1151 |
-
-A persistência apresentou menor erro absoluto médio (MAE), enquanto a Random Forest apresentou menor RMSE e R² menos negativo. Os dois modelos tiveram R² negativo. Isso indica que, na avaliação realizada, ambos foram inferiores ao preditor de referência baseado na média do alvo, segundo essa métrica.
-
-Na análise por faixa, a persistência apresentou menor MAE para TADA futura até 5. Nas faixas acima de 5, a Random Forest apresentou menor MAE. Os erros permaneceram elevados nos valores extremos.
-
-Arquivos de resultados:
-
-- `relatorios/comparacao_tada_persistencia.json`
-- `relatorios/comparacao_erros_por_faixa_tada.csv`
-- `relatorios/analise_final_tada.json`
-
-O arquivo `relatorios/previsoes_tada_teste.csv` contém previsões individuais e é mantido localmente, fora do versionamento, devido ao tamanho.
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- XGBoost
+- Matplotlib
+- Parquet
 
 ## Limitações
 
-1. A avaliação considera um único ano de teste.
-2. A distribuição da TADA futura é concentrada em valores baixos, com poucos casos extremos.
-3. A divisão temporal não garante independência entre cursos ou instituições nos conjuntos de treino e teste.
-4. A disponibilidade temporal e a definição oficial das variáveis devem ser verificadas para evitar vazamento de informação.
-5. Os resultados não demonstram adequação para uso operacional ou tomada de decisão.
-6. A fonte oficial e as condições de uso precisam ser documentadas antes da entrega final.
+- Baixa capacidade explicativa no teste final.
+- Generalização temporal limitada.
+- Diferentes algoritmos apresentaram desempenhos distintos.
+- O aumento de complexidade não garantiu melhora.
+- A TADA pode ser influenciada por fatores não contemplados nas variáveis utilizadas.
+- O desempenho observado em um período não garante resultados equivalentes em outros.
 
-## Uso de IA generativa
+## Considerações finais
 
-O ChatGPT foi utilizado como apoio à organização da documentação, estruturação de código e interpretação dos resultados. A equipe é responsável pela execução, verificação e compreensão dos arquivos entregues.
+O experimento demonstra a importância da validação temporal e da comparação com modelos de referência em problemas de previsão educacional.
 
-## Integrantes e contribuições
+Embora o Lasso tenha apresentado o melhor desempenho neste conjunto de experimentos, sua capacidade explicativa foi limitada. Os resultados reforçam a necessidade de avaliar modelos com base em evidências empíricas e considerar a natureza dos dados e as limitações de generalização.
 
-Preencher com os nomes completos dos integrantes e as contribuições efetivamente realizadas por cada pessoa.
-
-## Referências e rastreabilidade
-
-Registrar o endereço oficial da fonte dos dados, a data de obtenção, a versão dos arquivos e as condições de uso após verificação documental.
+Projeto de caráter acadêmico e exploratório.
