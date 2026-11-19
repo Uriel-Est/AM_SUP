@@ -156,6 +156,20 @@ AM_SUP/
 - Matplotlib
 - Parquet
 
+## Como executar
+
+### Requisitos
+
+- Python 3
+- Bibliotecas listadas nas dependências do projeto
+- Arquivos de dados originais do INEP, armazenados localmente
+
+### Pipeline
+
+Os scripts numerados em `code/` representam as etapas de preparação, processamento, auditoria e modelagem.
+
+A execução deve respeitar a sequência das etapas de preparação de dados antes dos scripts de modelagem. Os experimentos individuais podem ser executados separadamente, desde que suas bases de entrada já estejam disponíveis.
+
 ## Limitações
 
 - Baixa capacidade explicativa no teste final.
